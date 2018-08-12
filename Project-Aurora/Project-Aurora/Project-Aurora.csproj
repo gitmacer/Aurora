@@ -411,6 +411,15 @@
     <Compile Include="Profiles\Dishonored\GameEvent_Dishonored.cs" />
     <Compile Include="Profiles\Dishonored\GSI\GameState_Dishonored.cs" />
     <Compile Include="Profiles\Dishonored\GSI\Nodes\Player.cs" />
+	<Compile Include="Profiles\Poly Bridge\PolyBridgeApplication.cs" /> 
+    <Compile Include="Profiles\Poly Bridge\PolyBridgePointers.cs" /> 
+    <Compile Include="Profiles\Poly Bridge\PolyBridgeProfile.cs" /> 
+    <Compile Include="Profiles\Poly Bridge\Control_PolyBridge.xaml.cs"> 
+      <DependentUpon>Control_Dishonored.xaml</DependentUpon> 
+    </Compile> 
+    <Compile Include="Profiles\Poly Bridge\GameEvent_PolyBridge.cs" /> 
+    <Compile Include="Profiles\Poly Bridge\GSI\GameState_PolyBridge.cs" /> 
+    <Compile Include="Profiles\Poly Bridge\GSI\Nodes\Player.cs" /> 
     <Compile Include="Profiles\DyingLight\DyingLightProfile.cs" />
     <Compile Include="Profiles\ETS2\Control_ETS2.xaml.cs">
       <DependentUpon>Control_ETS2.xaml</DependentUpon>
@@ -1192,6 +1201,7 @@
     <Resource Include="Resources\ats_64x64.png" />
     <Resource Include="Resources\qc_256x256.png" />
     <Resource Include="Resources\bf1_128x128.png" />
+	<Resource Include="Resources\PolyBridge.png" />
     <Resource Include="Resources\dh_128x128.png" />
     <Resource Include="Resources\witcher3_256x256.png" />
     <Resource Include="Resources\minecraft_128x128.png" />
@@ -1230,6 +1240,11 @@
     <None Include="Pointers\Dishonored.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+	
+	<None Include="Pointers\PolyBridge.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+	
     <None Include="Pointers\Borderlands2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -1368,6 +1383,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Profiles\Dishonored\Control_Dishonored.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+	<Page Include="Profiles\Poly Bridge\Control_PolyBridge.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
