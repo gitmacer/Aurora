@@ -35,9 +35,9 @@ namespace Aurora.Settings.Overrides.Logic {
         /// <summary>
         /// Re-creates the list collection view that is used for the expression selection list.
         /// </summary>
-        private void UpdateExpressionListItems(EvaluatableType t) {
+        private void UpdateExpressionListItems(Type t) {
             ListCollectionView lcv = new ListCollectionView(EvaluatableRegistry
-                .Get(EvaluatableTypeResolver.Resolve(t)) // Get all condition types that match the required type
+                .Get(t) // Get all condition types that match the required type
                 .OrderBy(kvp => (int)kvp.Value.Category) // Order them by the numeric value of the category (so they appear in the order specified)
                 .ThenBy(kvp => kvp.Value.Name) // Then, order the items alphabetically in their category
                 .ToList());
@@ -108,12 +108,12 @@ namespace Aurora.Settings.Overrides.Logic {
         // The subtype of evaluatable to restrict the user to (e.g. IEvaluatable<bool>)
         private static void OnEvalTypeChange(DependencyObject evaluatablePresenter, DependencyPropertyChangedEventArgs eventArgs) {
             var control = (Control_EvaluatablePresenter)evaluatablePresenter;
-            control.UpdateExpressionListItems((EvaluatableType)eventArgs.NewValue);
+            control.UpdateExpressionListItems((Type)eventArgs.NewValue);
         }
 
-        public static readonly DependencyProperty EvalTypeProperty = DependencyProperty.Register("EvalType", typeof(EvaluatableType), typeof(Control_EvaluatablePresenter), new FrameworkPropertyMetadata(EvaluatableType.All, FrameworkPropertyMetadataOptions.AffectsRender, OnEvalTypeChange));
-        public EvaluatableType EvalType {
-            get => (EvaluatableType)GetValue(EvalTypeProperty);
+        public static readonly DependencyProperty EvalTypeProperty = DependencyProperty.Register("EvalType", typeof(Type), typeof(Control_EvaluatablePresenter), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnEvalTypeChange));
+        public Type EvalType {
+            get => (Type)GetValue(EvalTypeProperty);
             set => SetValue(EvalTypeProperty, value);
         }
         #endregion

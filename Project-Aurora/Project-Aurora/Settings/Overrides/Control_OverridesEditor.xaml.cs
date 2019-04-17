@@ -22,11 +22,10 @@ namespace Aurora.Settings.Overrides {
         public Control_OverridesEditor() {
             // Setup UI and databinding stuff
             InitializeComponent();
-            DataContext = this;
+            ((FrameworkElement)Content).DataContext = this;
         }
 
-        #region Events
-        // Property change event
+        #region PropertyChanged Event
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(params string[] affectedProperties) {
             foreach (var prop in affectedProperties)
@@ -35,7 +34,6 @@ namespace Aurora.Settings.Overrides {
         #endregion
 
         #region Properties
-
         /// <summary>
         /// For the given layer, returns a list of all properties on the handler of that layer that have the OverridableAttribute 
         /// applied (i.e. have been marked overridable for the overrides system).
@@ -60,18 +58,13 @@ namespace Aurora.Settings.Overrides {
             }
         }
 
-        // List of all IOverrideLogic types that the user can select
-        public Dictionary<string, Type> OverrideTypes { get; } = new Dictionary<string, Type> {
-            { "None", null },
-            { "Dynamic Value", typeof(OverrideDynamicValue) },
-            { "Lookup Table", typeof(OverrideLookupTable) }
-        };
-
-        // The layer being edited by the window
+        /// <summary>The layer being edited by this control.</summary>
         public Layer Layer {
             get => (Layer)GetValue(LayerProperty);
             set => SetValue(LayerProperty, value);
         }
+        public static readonly DependencyProperty LayerProperty =
+            DependencyProperty.Register("Layer", typeof(Layer), typeof(Control_OverridesEditor), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnLayerChange));
 
         // The name of the selected property that is being edited
         private Tuple<string, string, Type> _selectedProperty;
@@ -79,61 +72,51 @@ namespace Aurora.Settings.Overrides {
             get => _selectedProperty;
             set {
                 _selectedProperty = value;
-                OnPropertyChanged("SelectedProperty", "SelectedLogic", "SelectedLogicType", "SelectedLogicControl");
+                OnPropertyChanged("SelectedProperty", "OverridesEnabledForProperty", "CurrentEvaluatable");
             }
         }
 
-        // The override logic for the currently selected property
-        public IOverrideLogic SelectedLogic => _selectedProperty == null || !Layer.OverrideLogic.ContainsKey(_selectedProperty.Item1)
-            ? null // Return nothing if nothing in the list is selected or there is no logic for this property
-            : Layer.OverrideLogic[_selectedProperty.Item1];
-
-        // The type of logic in use by the selected property
-        public Type SelectedLogicType {
-            get => SelectedLogic?.GetType();
-
-            // When this is set, it means the user has changed the dropdown value
+        public bool OverridesEnabledForProperty {
+            get => SelectedProperty != null && CurrentEvaluatable != null;
             set {
-                // If there is a property selected in the list and the logic type is not set to the same value as it already was
-                if (_selectedProperty != null && SelectedLogic?.GetType() != value) {
-                    if (value == null) { // If the value is null, that means the user selected the "None" option, so remove the override for this property. Also force reset the override to null so that it doesn't persist after removing the logic.
-                        Layer.OverrideLogic.Remove(_selectedProperty.Item1);
-                        ((IValueOverridable)Layer.Handler.Properties).Overrides.SetValueFromString(_selectedProperty.Item1, null);
-                    }  else // Else if the user selected a non-"None" option, create a new instance of that OverrideLogic and assign it to this property
-                        Layer.OverrideLogic[_selectedProperty.Item1] = (IOverrideLogic)Activator.CreateInstance(value, _selectedProperty.Item3);
-                    OnPropertyChanged("SelectedLogic", "SelectedLogicType", "SelectedLogicControl"); // Raise an event to update the control
+                if (Layer == null || value == OverridesEnabledForProperty) return;
+                if (value) {
+                    Layer.OverrideLogic[SelectedProperty.Item1] = EvaluatableDefaults.Get(SelectedProperty.Item3);
+                } else {
+                    Layer.OverrideLogic.Remove(SelectedProperty.Item1);
+                    ((IValueOverridable)Layer.Handler.Properties).Overrides.SetValueFromString(_selectedProperty.Item1, null);
                 }
+                OnPropertyChanged("CurrentEvaluatable");
             }
         }
 
-        // The control for the currently selected logic
-        public System.Windows.Media.Visual SelectedLogicControl => SelectedLogic?.GetControl(Layer?.AssociatedApplication);
+        public IEvaluatable CurrentEvaluatable {
+            get => (Layer != null && SelectedProperty != null && Layer.OverrideLogic.TryGetValue(SelectedProperty.Item1, out var eval)) ? eval : null;
+            set {
+                if (Layer != null)
+                    Layer.OverrideLogic[SelectedProperty.Item1] = value;
+            }
+        }
         #endregion
 
-        #region Dependency Objects
         private static void OnLayerChange(DependencyObject overridesEditor, DependencyPropertyChangedEventArgs eventArgs) {
             var control = (Control_OverridesEditor)overridesEditor;
             var layer = (Layer)eventArgs.NewValue;
             // Ensure the layer has the property-override map
             if (layer.OverrideLogic == null)
-                layer.OverrideLogic = new Dictionary<string, IOverrideLogic>();
-            control.OnPropertyChanged("Layer", "AvailableLayerProperties", "SelectedProperty", "SelectedLogic", "SelectedLogicType", "SelectedLogicControl");
+                layer.OverrideLogic = new Dictionary<string, IEvaluatable>();
+            control.SelectedProperty = null;
+            control.OnPropertyChanged("Layer", "AvailableLayerProperties");
         }
-
-        public static readonly DependencyProperty LayerProperty = DependencyProperty.Register("Layer", typeof(Layer), typeof(Control_OverridesEditor), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnLayerChange));
-        #endregion
 
         #region Methods
-        public void ForcePropertyListUpdate() {
-            // Inform bindings that the available properties list has changed.
-            // This may also change the selected property, and therefore the selected logic etc.
-            OnPropertyChanged("AvailableLayerProperties", "SelectedProperty", "SelectedLogic", "SelectedLogicType", "SelectedLogicControl");
-        }
+        // Inform bindings that the available properties list has changed (by raising "" has changed).
+        // This may also change the selected property, and therefore the selected logic etc.
+        public void ForcePropertyListUpdate() => OnPropertyChanged("");
 
-        private void HelpButton_Click(object sender, RoutedEventArgs e) {
-            // Open the overrides page on the documentation page
+        /// <summary>Open the overrides page on the documentation page</summary>
+        private void HelpButton_Click(object sender, RoutedEventArgs e) =>
             Process.Start(new ProcessStartInfo(@"https://project-aurora.gitbook.io/guide/advanced-topics/overrides-system"));
-        }
         #endregion
     }
 

@@ -9,7 +9,7 @@ namespace Aurora.Settings.Overrides.Logic {
     /// <summary>
     /// Logic that compares two strings using a selection of operators.
     /// </summary>
-    [OverrideLogic("String Comparison", category: OverrideLogicCategory.String)]
+    [Evaluatable("String Comparison", category: OverrideLogicCategory.String)]
     public class StringComparison : IEvaluatable<bool> {
 
         // Operands and operator
@@ -23,7 +23,7 @@ namespace Aurora.Settings.Overrides.Logic {
         private Control_BinaryOperationHolder control;
         public Visual GetControl(Application application) {
             if (control == null) {
-                control = new Control_BinaryOperationHolder(application, EvaluatableType.String, typeof(StringComparisonOperator));
+                control = new Control_BinaryOperationHolder(application, typeof(string), typeof(StringComparisonOperator));
                 control.SetBinding(Control_BinaryOperationHolder.Operand1Property, new Binding("Operand1") { Source = this, Mode = BindingMode.TwoWay });
                 control.SetBinding(Control_BinaryOperationHolder.Operand2Property, new Binding("Operand2") { Source = this, Mode = BindingMode.TwoWay });
                 control.SetBinding(Control_BinaryOperationHolder.SelectedOperatorProperty, new Binding("Operator") { Source = this, Mode = BindingMode.TwoWay });

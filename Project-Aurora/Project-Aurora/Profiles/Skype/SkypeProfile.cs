@@ -36,9 +36,12 @@ namespace Aurora.Profiles.Skype
                         _SecondaryColor = Color.Black,
                         _EffectSpeed = 2.5f
                     },
-
-                }, new Settings.Overrides.Logic.Builder.OverrideLogicBuilder().SetDynamicBoolean("_Enabled", new BooleanMathsComparison(new NumberGSINumeric("Data/MissedMessagesCount"), ComparisonOperator.GT, 0))),
-                 new Layer("Call Indicator", new BreathingLayerHandler()
+                }) {
+                    OverrideLogic = new Dictionary<string, IEvaluatable> {
+                        { "_Enabled", new BooleanMathsComparison(new NumberGSINumeric("Data/MissedMessagesCount"), ComparisonOperator.GT, 0) }
+                    }
+                },
+                new Layer("Call Indicator", new BreathingLayerHandler()
                 {
                     Properties = new BreathingLayerHandlerProperties()
                     {
@@ -51,8 +54,12 @@ namespace Aurora.Profiles.Skype
                         _EffectSpeed = 2.5f
                     },
 
-                }, new Settings.Overrides.Logic.Builder.OverrideLogicBuilder().SetDynamicBoolean("_Enabled", new BooleanGSIBoolean("Data/IsCalled")))
-        };
+                }) {
+                    OverrideLogic = new Dictionary<string, IEvaluatable> {
+                        { "_Enabled", new BooleanGSIBoolean("Data/IsCalled") }
+                    }
+                }
+            };
 
         }
 

@@ -55,5 +55,17 @@ namespace Aurora.Utils
         /// Checks if the given type implements the given interface type.
         /// </summary>
         public static bool IsInterface(Type type, Type @interface) => @interface.IsAssignableFrom(type);
+
+        public static bool ImplementsGenericInterface(Type type, Type interfaceType) =>
+            type.GetInterfaces().Select(i => i.IsGenericType ? i.GetGenericTypeDefinition() : i).Contains(interfaceType);
+
+        public static bool ImplementsGenericInterface(Type type, Type interfaceType, params Type[] interfaceGenericParameters) =>
+            type.GetInterfaces()
+                .Where(i => i.IsGenericType)
+                .SingleOrDefault(i => i.GetGenericTypeDefinition() == interfaceType)?
+                .GetGenericArguments()
+                    .Select((arg, i) => arg == interfaceGenericParameters[i])
+                    .All(v => v)
+                ?? false;
     }
 }

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Aurora.Settings.Overrides.Logic"
              xmlns:util="clr-namespace:Aurora.Utils"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -71,7 +72,7 @@
                                     <Button Content="↓" VerticalAlignment="Center" Padding="4,2" Click="CaseDown_Click" />
                                     <Button Content="X" VerticalAlignment="Center" Padding="4,2" Click="DeleteCase_Click" />
                                 </StackPanel>
-                                <local:Control_EvaluatablePresenter Expression="{Binding Condition, Mode=TwoWay}" Application="{Binding Path=DataContext.Application, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" EvalType="Boolean" Margin="5,0,0,0" Visibility="{Binding Path=Condition, Converter={StaticResource IsNullToVisibilityConverter}}" />
+                                <local:Control_EvaluatablePresenter Expression="{Binding Condition, Mode=TwoWay}" Application="{Binding Path=DataContext.Application, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" EvalType="{x:Type sys:Boolean}" Margin="5,0,0,0" Visibility="{Binding Path=Condition, Converter={StaticResource IsNullToVisibilityConverter}}" />
                             </DockPanel>
                         </Border>
 

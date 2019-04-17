@@ -14,7 +14,7 @@ namespace Aurora.Settings.Overrides.Logic {
     /// <summary>
     /// Evaluatable that performs a binary mathematical operation on two operands.
     /// </summary>
-    [OverrideLogic("Arithmetic Operation", category: OverrideLogicCategory.Maths)]
+    [Evaluatable("Arithmetic Operation", category: OverrideLogicCategory.Maths)]
     public class NumberMathsOperation : IEvaluatable<double> {
 
         /// <summary>Creates a new maths operation that has no values pre-set.</summary>
@@ -42,7 +42,7 @@ namespace Aurora.Settings.Overrides.Logic {
         private Control_BinaryOperationHolder control;
         public Visual GetControl(Application application) {
             if (control == null) {
-                control = new Control_BinaryOperationHolder(application, EvaluatableType.Number, typeof(MathsOperator));
+                control = new Control_BinaryOperationHolder(application, typeof(double), typeof(MathsOperator));
                 control.SetBinding(Control_BinaryOperationHolder.Operand1Property, new Binding("Operand1") { Source = this, Mode = BindingMode.TwoWay });
                 control.SetBinding(Control_BinaryOperationHolder.Operand2Property, new Binding("Operand2") { Source = this, Mode = BindingMode.TwoWay });
                 control.SetBinding(Control_BinaryOperationHolder.SelectedOperatorProperty, new Binding("Operator") { Source = this, Mode = BindingMode.TwoWay });
@@ -82,7 +82,7 @@ namespace Aurora.Settings.Overrides.Logic {
     /// <summary>
     /// Returns the absolute value of the given evaluatable.
     /// </summary>
-    [OverrideLogic("Absolute", category: OverrideLogicCategory.Maths)]
+    [Evaluatable("Absolute", category: OverrideLogicCategory.Maths)]
     public class NumberAbsValue : IEvaluatable<double> {
 
         /// <summary>Creates a new absolute operation with the default operand.</summary>
@@ -119,7 +119,7 @@ namespace Aurora.Settings.Overrides.Logic {
     /// <summary>
     /// Evaluatable that compares two numerical evaluatables and returns a boolean depending on the comparison.
     /// </summary>
-    [OverrideLogic("Arithmetic Comparison", category: OverrideLogicCategory.Maths)]
+    [Evaluatable("Arithmetic Comparison", category: OverrideLogicCategory.Maths)]
     public class BooleanMathsComparison : IEvaluatable<bool> {
 
         /// <summary>Creates a new maths comparison that has no values pre-set.</summary>
@@ -147,7 +147,7 @@ namespace Aurora.Settings.Overrides.Logic {
         private Control_BinaryOperationHolder control;
         public Visual GetControl(Application application) {
             if (control == null) {
-                control = new Control_BinaryOperationHolder(application, EvaluatableType.Number, typeof(ComparisonOperator));
+                control = new Control_BinaryOperationHolder(application, typeof(double), typeof(ComparisonOperator));
                 control.SetBinding(Control_BinaryOperationHolder.Operand1Property, new Binding("Operand1") { Source = this, Mode = BindingMode.TwoWay });
                 control.SetBinding(Control_BinaryOperationHolder.Operand2Property, new Binding("Operand2") { Source = this, Mode = BindingMode.TwoWay });
                 control.SetBinding(Control_BinaryOperationHolder.SelectedOperatorProperty, new Binding("Operator") { Source = this, Mode = BindingMode.TwoWay });
@@ -188,7 +188,7 @@ namespace Aurora.Settings.Overrides.Logic {
     /// <summary>
     /// Evaluatable that takes a number in a given range and maps it onto another range.
     /// </summary>
-    [OverrideLogic("Numeric Map", category: OverrideLogicCategory.Maths)]
+    [Evaluatable("Numeric Map", category: OverrideLogicCategory.Maths)]
     public class NumberMap : IEvaluatable<double> {
 
         /// <summary>Creates a new numeric map with the default constant parameters.</summary>
@@ -249,7 +249,7 @@ namespace Aurora.Settings.Overrides.Logic {
     /// <summary>
     /// Evaluatable that resolves to a numerical constant.
     /// </summary>
-    [OverrideLogic("Number Constant", category: OverrideLogicCategory.Maths)]
+    [Evaluatable("Number Constant", category: OverrideLogicCategory.Maths)]
     public class NumberConstant : IEvaluatable<double> {
 
         /// <summary>Creates a new constant with the zero as the constant value.</summary>

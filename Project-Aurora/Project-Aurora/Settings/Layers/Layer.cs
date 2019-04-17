@@ -1,7 +1,6 @@
 using Aurora.EffectsEngine;
 using Aurora.Profiles;
 using Aurora.Settings.Overrides.Logic;
-using Aurora.Settings.Overrides.Logic.Builder;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -199,9 +198,9 @@ namespace Aurora.Settings.Layers
             }
         }*/
 
-        protected Dictionary<string, IOverrideLogic> _OverrideLogic;
+        protected Dictionary<string, IEvaluatable> _OverrideLogic;
 
-        public Dictionary<string, IOverrideLogic> OverrideLogic
+        public Dictionary<string, IEvaluatable> OverrideLogic
         {
             get { return _OverrideLogic; }
             set
@@ -227,11 +226,9 @@ namespace Aurora.Settings.Layers
                 _Handler = handler;
         }
 
-        public Layer(string name, ILayerHandler handler, Dictionary<string, IOverrideLogic> overrideLogic) : this(name, handler) {
+        public Layer(string name, ILayerHandler handler, Dictionary<string, IEvaluatable> overrideLogic) : this(name, handler) {
             _OverrideLogic = overrideLogic;
         }
-
-        public Layer(string name, ILayerHandler handler, OverrideLogicBuilder builder) : this(name, handler, builder.Create()) { }
 
         public EffectLayer Render(IGameState gs)
         {

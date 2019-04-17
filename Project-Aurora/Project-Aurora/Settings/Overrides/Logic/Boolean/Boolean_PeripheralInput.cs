@@ -14,7 +14,7 @@ namespace Aurora.Settings.Overrides.Logic {
     /// <summary>
     /// Condition that is true when a specific keyboard button is held down.
     /// </summary>
-    [OverrideLogic("Key Held", category: OverrideLogicCategory.Input)]
+    [Evaluatable("Key Held", category: OverrideLogicCategory.Input)]
     public class BooleanKeyDown : IEvaluatable<bool> {
 
         /// <summary>Creates a new key held condition with the default key (Space) as the trigger key.</summary>
@@ -47,7 +47,7 @@ namespace Aurora.Settings.Overrides.Logic {
     /// <summary>
     /// Condition that is true when a specific keyboard button is held down.
     /// </summary>
-    [OverrideLogic("Key Press (Retain for duration)", category: OverrideLogicCategory.Input)]
+    [Evaluatable("Key Press (Retain for duration)", category: OverrideLogicCategory.Input)]
     public class BooleanKeyDownWithTimer : IEvaluatable<bool>
     {
         private Stopwatch watch = new Stopwatch();
@@ -116,7 +116,7 @@ namespace Aurora.Settings.Overrides.Logic {
     /// <summary>
     /// Condition that is true when a specific mouse button is held down.
     /// </summary>
-    [OverrideLogic("Mouse Button Held", category: OverrideLogicCategory.Input)]
+    [Evaluatable("Mouse Button Held", category: OverrideLogicCategory.Input)]
     public class BooleanMouseDown : IEvaluatable<bool> {
 
         /// <summary>Creates a new key held condition with the default mouse button (Left) as the trigger button.</summary>
@@ -149,7 +149,7 @@ namespace Aurora.Settings.Overrides.Logic {
     /// <summary>
     /// Condition that is true when the specified lock key (e.g. caps lock) is active.
     /// </summary>
-    [OverrideLogic("Lock Key Active", category: OverrideLogicCategory.Input)]
+    [Evaluatable("Lock Key Active", category: OverrideLogicCategory.Input)]
     public class BooleanLockKeyActive : IEvaluatable<bool> {
 
         /// <summary>Creates a new key held condition with the default lock type (CapsLock) as the lock type.</summary>

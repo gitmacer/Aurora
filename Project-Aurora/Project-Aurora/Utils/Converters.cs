@@ -29,6 +29,12 @@ namespace Aurora.Utils {
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 
+    /// <summary>Simple 2-way converter that inverts the given boolean.</summary>
+    public class BooleanInverterConverter : IValueConverter {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => !((bool)value);
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => !((bool)value);
+    }
+
     /// <summary>
     /// Converter that allows specification of multiple other converters.
     /// Does not support "ConvertBack".

@@ -615,7 +615,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Settings\Overrides\Logic\Color\Control_ColorFromValues.xaml.cs">
+      <DependentUpon>Control_ColorFromValues.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\Overrides\Logic\Boolean\Boolean_PeripheralInput.cs" />
+    <Compile Include="Settings\Overrides\Logic\Color\Color_Ctors.cs" />
     <Compile Include="Settings\Overrides\Logic\Control_BinaryOperationHolder.xaml.cs">
       <DependentUpon>Control_BinaryOperationHolder.xaml</DependentUpon>
     </Compile>
@@ -629,20 +633,12 @@
     <Compile Include="Settings\Overrides\Logic\Number\Control_NumericUnaryOpHolder.xaml.cs">
       <DependentUpon>Control_NumericUnaryOpHolder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Overrides\Logic\Control_OverrideDynamicValue.xaml.cs">
-      <DependentUpon>Control_OverrideDynamicValue.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Settings\Overrides\Logic\Number\Number_GameState.cs" />
     <Compile Include="Settings\Overrides\Logic\Number\Number_Waves.cs" />
     <Compile Include="Settings\Overrides\Logic\Number\Operators.cs" />
-    <Compile Include="Settings\Overrides\Logic\Control_OverrideLookupTable.xaml.cs">
-      <DependentUpon>Control_OverrideLookupTable.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Settings\Overrides\Logic\EvaluatableRegistry.cs" />
-    <Compile Include="Settings\Overrides\Logic\IOverrideLogic.cs" />
     <Compile Include="Settings\Overrides\Logic\Number\Number_Maths.cs" />
-    <Compile Include="Settings\Overrides\Logic\OverrideDynamicValue.cs" />
-    <Compile Include="Settings\Overrides\Logic\OverrideLogicAttribute.cs" />
+    <Compile Include="Settings\Overrides\Logic\EvaluatableAttribute.cs" />
     <Compile Include="Settings\Overrides\Logic\Boolean\Boolean_GameState.cs" />
     <Compile Include="Settings\Overrides\Logic\Boolean\Control_BooleanGSIBoolean.xaml.cs">
       <DependentUpon>Control_BooleanGSIBoolean.xaml</DependentUpon>
@@ -661,8 +657,6 @@
       <DependentUpon>Control_SublogicHolder.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Overrides\Logic\IEvaluatable.cs" />
-    <Compile Include="Settings\Overrides\Logic\OverrideLogicBuilder.cs" />
-    <Compile Include="Settings\Overrides\Logic\OverrideLookupTable.cs" />
     <Compile Include="Settings\Overrides\LogicOverridableAttribute.cs" />
     <Compile Include="Settings\Overrides\Logic\String\Operators.cs" />
     <Compile Include="Settings\Overrides\Logic\String\String_Constant.cs" />
@@ -1977,6 +1971,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Settings\Overrides\Logic\Color\Control_ColorFromValues.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings\Overrides\Logic\Boolean\Control_BooleanGSIBoolean.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -2002,14 +2000,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\Overrides\Logic\Number\Control_NumericUnaryOpHolder.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\Overrides\Logic\Control_OverrideDynamicValue.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\Overrides\Logic\Control_OverrideLookupTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
