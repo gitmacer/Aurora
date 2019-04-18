@@ -110,6 +110,9 @@ namespace Aurora.Settings.Overrides.Logic
         /// <summary>Creates a new evaluatable that returns caseTrue if condition evaluates to true and caseFalse otherwise.</summary>
         public IfElseColor(IEvaluatable<bool> condition, IEvaluatable<Color> caseTrue, IEvaluatable<Color> caseFalse) : base(condition, caseTrue, caseFalse) { }
 
+        /// <summary>Creates a new evaluatable that returns caseTrue if condition evaluates to true and caseFalse otherwise.</summary>
+        public IfElseColor(IEvaluatable<bool> condition, Color caseTrue, Color caseFalse) : base(condition, new ColorConstant(caseTrue), new ColorConstant(caseFalse)) { }
+
         /// <summary>Creates a new evaluatable using the given case tree.</summary>
         public IfElseColor(ObservableCollection<Branch> cases) : base(cases) { }
     }
