@@ -627,6 +627,7 @@
       <DependentUpon>Control_IfElse.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Overrides\Logic\Generic\IfElseIf.cs" />
+    <Compile Include="Settings\Overrides\Logic\KeySequence\KeySequence_Ctors.cs" />
     <Compile Include="Settings\Overrides\Logic\Number\Control_NumericMap.xaml.cs">
       <DependentUpon>Control_NumericMap.xaml</DependentUpon>
     </Compile>

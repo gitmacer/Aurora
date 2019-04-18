@@ -46,7 +46,8 @@ namespace Aurora.Settings.Overrides.Logic {
             { typeof(float), typeof(NumberConstant) },
             { typeof(double), typeof(NumberConstant) },
             { typeof(string), typeof(StringConstant) },
-            { typeof(System.Drawing.Color), typeof(ColorConstant) }
+            { typeof(System.Drawing.Color), typeof(ColorConstant) },
+            { typeof(KeySequence), typeof(KeySequenceConstant) }
         };
 
         public static IEvaluatable<T> Get<T>() => (IEvaluatable<T>)Get(typeof(T));

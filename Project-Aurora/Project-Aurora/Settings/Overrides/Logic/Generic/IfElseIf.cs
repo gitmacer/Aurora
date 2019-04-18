@@ -10,7 +10,6 @@ using System.Windows.Data;
 
 namespace Aurora.Settings.Overrides.Logic
 {
-    //[OverrideLogic("Numeric State Variable", category: OverrideLogicCategory.State)]
     public class IfElseGeneric<T> : IEvaluatable<T> {
         /// <summary>
         /// A list of all branches of the conditional.
@@ -115,5 +114,18 @@ namespace Aurora.Settings.Overrides.Logic
 
         /// <summary>Creates a new evaluatable using the given case tree.</summary>
         public IfElseColor(ObservableCollection<Branch> cases) : base(cases) { }
+    }
+
+
+    [Evaluatable("If - Else If - Else", category: OverrideLogicCategory.Logic)]
+    public class IfElseKeySequence : IfElseGeneric<KeySequence> {
+        /// <summary>Creates a new If-Else evaluatable with default evaluatables.</summary>
+        public IfElseKeySequence() : base() { }
+
+        /// <summary>Creates a new evaluatable that returns caseTrue if condition evaluates to true and caseFalse otherwise.</summary>
+        public IfElseKeySequence(IEvaluatable<bool> condition, IEvaluatable<KeySequence> caseTrue, IEvaluatable<KeySequence> caseFalse) : base(condition, caseTrue, caseFalse) { }
+        
+        /// <summary>Creates a new evaluatable using the given case tree.</summary>
+        public IfElseKeySequence(ObservableCollection<Branch> cases) : base(cases) { }
     }
 }

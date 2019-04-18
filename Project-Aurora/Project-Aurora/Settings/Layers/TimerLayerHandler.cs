@@ -29,12 +29,10 @@ namespace Aurora.Settings.Layers {
         [JsonIgnore]
         public int Duration { get { return Logic._Duration ?? _Duration ?? 0; } }
 
-        [LogicOverridable("Animation Type")]
         public TimerLayerAnimationType? _AnimationType { get; set; }
         [JsonIgnore]
         public TimerLayerAnimationType AnimationType { get { return Logic._AnimationType ?? _AnimationType ?? TimerLayerAnimationType.OnOff; } }
 
-        [LogicOverridable("Repeat Action")]
         public TimerLayerRepeatPressAction? _RepeatAction { get; set; }
         [JsonIgnore]
         public TimerLayerRepeatPressAction RepeatAction { get { return Logic._RepeatAction ?? _RepeatAction ?? TimerLayerRepeatPressAction.Reset; } }

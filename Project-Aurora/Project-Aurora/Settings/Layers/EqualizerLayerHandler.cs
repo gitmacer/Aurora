@@ -67,12 +67,10 @@ namespace Aurora.Settings.Layers
         [JsonIgnore]
         public EffectBrush Gradient { get { return Logic._Gradient ?? _Gradient ?? new EffectBrush().SetBrushType(EffectBrush.BrushType.Linear); } }
 
-        [LogicOverridable("Equalizer Type")]
         public EqualizerType? _EQType { get; set; }
         [JsonIgnore]
         public EqualizerType EQType { get { return Logic._EQType ?? _EQType ?? EqualizerType.PowerBars; } }
 
-        [LogicOverridable("View Type")]
         public EqualizerPresentationType? _ViewType { get; set; }
         [JsonIgnore]
         public EqualizerPresentationType ViewType { get { return Logic._ViewType ?? _ViewType ?? EqualizerPresentationType.SolidColor; } }

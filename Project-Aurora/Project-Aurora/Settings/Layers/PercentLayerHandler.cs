@@ -14,7 +14,6 @@ namespace Aurora.Settings.Layers
 {
     public class PercentLayerHandlerProperties<TProperty> : LayerHandlerProperties2Color<TProperty> where TProperty : PercentLayerHandlerProperties<TProperty>
     {
-        [LogicOverridable("Percent Type")]
         public PercentEffectType? _PercentType { get; set; }
         [JsonIgnore]
         public PercentEffectType PercentType { get { return Logic._PercentType ?? _PercentType ?? PercentEffectType.Progressive_Gradual; } }
