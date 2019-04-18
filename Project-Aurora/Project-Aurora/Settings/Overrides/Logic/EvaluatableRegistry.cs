@@ -27,6 +27,9 @@ namespace Aurora.Settings.Overrides.Logic {
         /// Caches results to that subsequent calls are marginally faster.</summary>
         /// <param name="t">The type to fetch (e.g. IEvaluatable&lt;bool&gt;).</param>
         public static Dictionary<Type, EvaluatableAttribute> Get(Type t) {
+            // Ensure all numbers (double, float, int, etc) become double
+            if (Utils.TypeUtils.IsNumericType(t)) t = typeof(double);
+
             if (!specificOverrideLogics.ContainsKey(t))
                 specificOverrideLogics[t] = allOverrideLogics
                     .Where(kvp => Utils.TypeUtils.ImplementsGenericInterface(kvp.Key, typeof(IEvaluatable<>), t))

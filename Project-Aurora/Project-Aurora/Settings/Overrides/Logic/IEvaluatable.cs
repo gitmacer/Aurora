@@ -41,6 +41,9 @@ namespace Aurora.Settings.Overrides.Logic {
 
         private static Dictionary<Type, Type> defaultsMap = new Dictionary<Type, Type> {
             { typeof(bool), typeof(BooleanConstant) },
+            { typeof(int), typeof(NumberConstant) },
+            { typeof(long), typeof(NumberConstant) },
+            { typeof(float), typeof(NumberConstant) },
             { typeof(double), typeof(NumberConstant) },
             { typeof(string), typeof(StringConstant) },
             { typeof(System.Drawing.Color), typeof(ColorConstant) }

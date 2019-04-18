@@ -52,6 +52,13 @@ namespace Aurora.Utils
         }
 
         /// <summary>
+        /// If the given type is a nullable type (e.g. float?) then returns the non-nullable variant (e.g. float).
+        /// If the given type is non nullable, simply returns it.
+        /// </summary>
+        public static Type GetNonNullableOf(Type type) =>
+            type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) ? Nullable.GetUnderlyingType(type) : type;
+
+        /// <summary>
         /// Checks if the given type implements the given interface type.
         /// </summary>
         public static bool IsInterface(Type type, Type @interface) => @interface.IsAssignableFrom(type);
