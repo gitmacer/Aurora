@@ -627,6 +627,9 @@
       <DependentUpon>Control_IfElse.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Overrides\Logic\Generic\IfElseIf.cs" />
+    <Compile Include="Settings\Overrides\Logic\KeySequence\Control_KeySequenceFromValues.xaml.cs">
+      <DependentUpon>Control_KeySequenceFromValues.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\Overrides\Logic\KeySequence\KeySequence_Ctors.cs" />
     <Compile Include="Settings\Overrides\Logic\Number\Control_NumericMap.xaml.cs">
       <DependentUpon>Control_NumericMap.xaml</DependentUpon>
@@ -1993,6 +1996,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\Overrides\Logic\Generic\Control_IfElse.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Settings\Overrides\Logic\KeySequence\Control_KeySequenceFromValues.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
