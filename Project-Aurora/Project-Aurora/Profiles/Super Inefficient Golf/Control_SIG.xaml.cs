@@ -50,9 +50,11 @@ namespace Aurora.Profiles.SIG
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                this.InstallWrapper(dialog.SelectedPath);
-
-                MessageBox.Show("Aurora Wrapper Patch for Razer applied to\r\n" + dialog.SelectedPath);
+                string installpath = Path.Combine(dialog.SelectedPath, WrapperInstallPath);
+                if (this.InstallWrapper(installpath))
+                MessageBox.Show("Aurora Wrapper Patch for Razer applied to\r\n" + installpath);
+                else
+                MessageBox.Show("Aurora Wrapper Patch for Razer could not be applied to\r\n" + installpath);
             }
         }
 
@@ -65,7 +67,7 @@ namespace Aurora.Profiles.SIG
                 installpath = Path.Combine(Utils.SteamUtils.GetGamePath(this.GameID), WrapperInstallPath);
 
 
-            if (!String.IsNullOrWhiteSpace(installpath))
+            if (!String.IsNullOrWhiteSpace(installpath) && Directory.Exists(installpath))
             {
                 using (BinaryWriter razer_wrapper_86 = new BinaryWriter(new FileStream(System.IO.Path.Combine(installpath, "RzChromaSDK.dll"), FileMode.Create)))
                 {
