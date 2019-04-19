@@ -589,6 +589,11 @@
     <Compile Include="Profiles\Subnautica\GSI\Nodes\WorldNode.cs" />
     <Compile Include="Profiles\Subnautica\SubnauticaApplication.cs" />
     <Compile Include="Profiles\Subnautica\SubnauticaProfile.cs" />
+    <Compile Include="Profiles\Super Inefficient Golf\Control_SIG.xaml.cs">
+      <DependentUpon>Control_SIG.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\Super Inefficient Golf\SIGApplication.cs" />
+    <Compile Include="Profiles\Super Inefficient Golf\SIGProfile.cs" />
     <Compile Include="Profiles\Witcher3\Control_Witcher3.xaml.cs">
       <DependentUpon>Control_Witcher3.xaml</DependentUpon>
     </Compile>
@@ -1484,6 +1489,7 @@
     <Resource Include="Resources\icons8-keyboard-30.png" />
     <Resource Include="Resources\osu_256x256.png" />
     <Resource Include="Profiles\Osu\GSI\OsuSyncAuroraPlugin.dll" />
+    <Resource Include="Resources\SIG.png" />
     <Content Include="wooting-rgb-sdk.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1913,6 +1919,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Profiles\Subnautica\Control_Subnautica.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Profiles\Super Inefficient Golf\Control_SIG.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

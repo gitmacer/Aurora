@@ -147,7 +147,8 @@ namespace Aurora.Profiles
                 new Subnautica.Subnautica(),
                 new ResidentEvil2.ResidentEvil2(),
                 new CloneHero.CloneHero(),
-                new Osu.Osu()
+                new Osu.Osu(),
+                new SIG.SIG()
             });
 
             RegisterLayerHandlers(new List<LayerHandlerEntry> {
