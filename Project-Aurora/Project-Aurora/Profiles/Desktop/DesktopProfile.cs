@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using Aurora.Settings.Overrides.Logic;
+using Aurora.EffectsEngine;
+using System.Runtime.Serialization;
+using System.Linq;
+using Aurora.Utils;
 
 namespace Aurora.Profiles.Desktop
 {
@@ -30,9 +35,45 @@ namespace Aurora.Profiles.Desktop
             
         }
 
+        private void setVolumeOverlay()
+        {
+            OverlayLayers.Add(new Layer("Volume Overlay", new PercentGradientLayerHandler()
+            {
+                Properties = new PercentGradientLayerHandlerProperties()
+                {
+                    _Sequence = new KeySequence(new Devices.DeviceKeys[] {
+                            Devices.DeviceKeys.F1, Devices.DeviceKeys.F2, Devices.DeviceKeys.F3, Devices.DeviceKeys.F4,
+                            Devices.DeviceKeys.F5, Devices.DeviceKeys.F6, Devices.DeviceKeys.F7, Devices.DeviceKeys.F8,
+                            Devices.DeviceKeys.F9, Devices.DeviceKeys.F10, Devices.DeviceKeys.F11, Devices.DeviceKeys.F12
+                        }),
+                    _Gradient = new EffectsEngine.EffectBrush()
+                    {
+                        type = EffectBrush.BrushType.Linear,
+                        colorGradients = new SortedDictionary<float, Color> {
+                                { 0f, Color.FromArgb(255, 0, 255, 0) },
+                                { 0.5f, Color.OrangeRed },
+                                { 1f, Color.Red }
+                            }
+                    },
+                    _VariablePath = "LocalPCInfo/SystemVolume",
+                    _MaxVariablePath = "100"
+                },
+
+            }) {
+                OverrideLogic = new ObservableDictionary<string, IEvaluatable>() {
+                    { "_Enabled", new BooleanOr(new[]{
+                        new BooleanKeyDownWithTimer(Keys.VolumeUp, 3),
+                        new BooleanKeyDownWithTimer(Keys.VolumeDown, 3)
+                    }) }
+                }
+            });
+        }
+
         public override void Reset()
         {
             base.Reset();
+            setVolumeOverlay();
+
             Layers = new System.Collections.ObjectModel.ObservableCollection<Layer>()
             {
                 new Layer("Ctrl Shortcuts", new ShortcutAssistantLayerHandler()
@@ -164,6 +205,12 @@ namespace Aurora.Profiles.Desktop
                 }
                 )
             };
+        }
+
+        [OnDeserialized]
+        void OnDeserialized(StreamingContext context)
+        {
+
         }
     }
 }

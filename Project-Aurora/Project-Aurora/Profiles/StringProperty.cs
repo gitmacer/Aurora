@@ -16,114 +16,99 @@ namespace Aurora.Profiles
         IStringProperty Clone();
     }
 
-    public class StringProperty<T> : IStringProperty
+    public abstract class StringProperty<T> : IStringProperty
     {
-        public static Dictionary<string, Tuple<Func<T, object>, Action<T, object>, Type>> PropertyLookup { get; set; } = null;
+        public static Dictionary<string, Member> PropertyLookup { get; set; } = null;
         public static object DictLock = new object();
 
-        public StringProperty()
-        {
-            lock (DictLock)
-            {
+        public StringProperty() {
+            lock (DictLock) {
                 if (PropertyLookup != null)
                     return;
 
-                PropertyLookup = new Dictionary<string, Tuple<Func<T, object>, Action<T, object>, Type>>();
+                PropertyLookup = new Dictionary<string, Member>();
+                var thisType = typeof(T);
 
-                Type typ = typeof(T);
-                foreach (MemberInfo prop in typ.GetMembers())
-                {
-                    ParameterExpression paramExpression = Expression.Parameter(typ);
-                    Func<T, object> getp;
-                    switch (prop.MemberType)
-                    {
-                        case MemberTypes.Property:
-                        case MemberTypes.Field:
-                            Type t = Expression.GetFuncType(typ, typeof(object));
+                // For every member in the type extending this class
+                foreach (var member in thisType.GetMembers()) {
+                    ParameterExpression paramExpression = Expression.Parameter(thisType);
 
-                            LambdaExpression exp = Expression.Lambda(
-                                t,
-                                Expression.Convert(
-                                    Expression.PropertyOrField(paramExpression, prop.Name),
-                                    typeof(object)
-                                ),
-                                paramExpression
-                            );
+                    // Ignore anything not a field or property (methods, ctors, etc.)
+                    if (member.MemberType != MemberTypes.Property && member.MemberType != MemberTypes.Field)
+                        continue;
 
-                            getp = (Func<T, object>)exp.Compile();
-                            break;
-                        /*case MemberTypes.Property:
-                            getp = (Func<T, object>)Delegate.CreateDelegate(
-                                typeof(Func<T, object>),
-                                ((PropertyInfo)prop).GetMethod
-                            );
-
-                            break;*/
-                        default:
-                            continue;
-                    }
+                    // Get the type represented by this member
+                    var memberType = member.MemberType == MemberTypes.Property ? ((PropertyInfo)member).PropertyType : ((FieldInfo)member).FieldType;
 
 
+                    // Create a getter lambda that will take an instance of type T and return the value of this member in that instance
+                    var getter = Expression.Lambda<Func<T, object>>(
+                        // Body
+                        Expression.Convert(
+                            Expression.PropertyOrField(paramExpression, member.Name),
+                            typeof(object)
+                        ),
+                        // Params
+                        paramExpression
+                    ).Compile();
 
-                    Action<T, object> setp = null;
-                    if (!(prop.MemberType == MemberTypes.Property && ((PropertyInfo)prop).SetMethod == null))
-                    {
-                        ParameterExpression paramExpression2 = Expression.Parameter(typeof(object));
-                        MemberExpression propertyGetterExpression = Expression.PropertyOrField(paramExpression, prop.Name);
 
-                        Type var_type;
-                        if (prop is PropertyInfo)
-                            var_type = ((PropertyInfo)prop).PropertyType;
-                        else
-                            var_type = ((FieldInfo)prop).FieldType;
+                    // Create a setter lambda that will take an instance of type T and a value and set the instance's member to value
+                    Action<T, object> setter = null;
+                    if (!(member.MemberType == MemberTypes.Property && ((PropertyInfo)member).SetMethod == null)) {
+                        ParameterExpression objectTypeParam = Expression.Parameter(typeof(object));
+                        MemberExpression propertyGetterExpression = Expression.PropertyOrField(paramExpression, member.Name);
 
-                        setp = Expression.Lambda<Action<T, object>>
-                        (
-                            Expression.Assign(propertyGetterExpression, Expression.ConvertChecked(paramExpression2, var_type)), paramExpression, paramExpression2
+                        setter = Expression.Lambda<Action<T, object>>(
+                            // Body
+                            Expression.Assign(
+                                propertyGetterExpression,
+                                Expression.ConvertChecked(objectTypeParam, memberType)
+                            ),
+                            // Params
+                            paramExpression, objectTypeParam
                         ).Compile();
                     }
-                    if (!PropertyLookup.ContainsKey(prop.Name))
-                    {
-                        PropertyLookup.Add(prop.Name, new Tuple<Func<T, object>, Action<T, object>, Type>(getp, setp, typ));
-                    }
 
+                    // Add this member to the property lookup dictionary. Now with named struct instead of nameless tuples :)
+                    if (!PropertyLookup.ContainsKey(member.Name))
+                        PropertyLookup.Add(member.Name, new Member {
+                            get = getter,
+                            set = setter,
+                            memberType = memberType,
+                            nonNullableMemberType = Utils.TypeUtils.GetNonNullableOf(memberType)
+                        });
                 }
             }
         }
 
-        public object GetValueFromString(string name, object input = null)
-        {
+        public object GetValueFromString(string name, object input = null) =>
+            PropertyLookup.ContainsKey(name) ? PropertyLookup[name].get((T)(object)this) : null;
+
+        public void SetValueFromString(string name, object value) {
             if (PropertyLookup.ContainsKey(name))
-            {
-                return PropertyLookup[name].Item1((T)(object)this);
-            }
-
-            /*Type t = obj.GetType();
-            MemberInfo member;
-            if ((member = input == null ? t.GetMember(name).FirstOrDefault() : t.GetMethod(name, new[] { input.GetType() })) != null)
-            {
-                if (member is FieldInfo)
-                    return ((FieldInfo)member).GetValue(obj);
-                else if (member is PropertyInfo)
-                    return ((PropertyInfo)member).GetValue(obj);
-                else if (member is MethodInfo)
-                    return ((MethodInfo)member).Invoke(obj, new[] { input });
-            }*/
-
-            return null;
+                // Convert the value to the right type, though if null is given, don't try to cast it
+                PropertyLookup[name].set((T)(object)this, value == null ? null : Convert.ChangeType(value, PropertyLookup[name].nonNullableMemberType));
         }
 
-        public void SetValueFromString(string name, object value)
-        {
-            if (PropertyLookup.ContainsKey(name))
-            {
-                PropertyLookup[name]?.Item2((T)(object)this, value);
-            }
-        }
+        public IStringProperty Clone() => (IStringProperty)MemberwiseClone();
 
-        public IStringProperty Clone()
-        {
-            return (IStringProperty)this.MemberwiseClone();
+
+        /// <summary>
+        /// Struct that holds pre-compiled delegates for getting/setting a particular property of by name.
+        /// </summary>
+        public struct Member {
+            /// <summary>A function that when called and provided with an instance of T, returns the value of this member.</summary>
+            public Func<T, object> get;
+
+            /// <summary>An action that when called and provided with an instance of T and an object, will set the value of this member on T to the value.</summary>
+            public Action<T, object> set;
+
+            /// <summary>The type of member as it appears in the T definition.</summary>
+            public Type memberType;
+
+            /// <summary>The type of member, coerced to be non-nullable. If <see cref="memberType"/> is non-nullable, this will be the same.</summary>
+            public Type nonNullableMemberType;
         }
     }
 }

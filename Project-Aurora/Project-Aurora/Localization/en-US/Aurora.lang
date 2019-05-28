@@ -1,0 +1,74 @@
+﻿startup_settings: Aurora Startup Settings
+run_startup: Launch with Windows
+delay: Delay
+~   Seconds as in the time unit
+seconds: Seconds
+start_minimized: Start Aurora minimized
+high_priority: High priority
+closing_mode: Closing mode
+show_overlays_preview: Show overlays in preview
+global_brightness: Global brightness
+keyboard_brightness: Keyboard brightness
+peripheral_brightness: Peripheral brightness
+use_alt_volume: Alt + volume controls change global brightness
+bitmap_quality: Bitmap quality
+restart_required: Restart required
+theme: Theme
+language: Language
+add: Add
+remove: Remove
+application_settings: Application Settings
+app_detection_mode: Application detection mode
+excluded_processes: Excluded processes
+check_updates_start: Check for updates on start
+check_pointers_start: Check for pointer updates on start
+prerelease_updates: Get pre-release updates
+version: Version
+check_for_updates: Check for updates
+update_settings: Update settings
+devices_wrappers: Devices & Wrappers
+preferred_keyboard: Preferred keyboard
+preferred_keyboard_layout: Preferred keyboard layout
+preferred_keycap: Preferred keycap type
+preferred_mouse: Preferred mouse
+mouse_orientation: Mouse orientation
+disable_keyboard_lighting: Disable keyboard lighting
+disable_mouse_lighting: Disable mouse lighting
+disable_headset_lighting: Disable headset lighting
+first_time_instruct: First-time instructions
+install_wrapper: Install Aurora wrapper patch
+allow_wrapper_priority: Allow wrappers to override desktop profile
+debug_settings: Debug Settings
+show_bmp_window: Show bitmap window
+show_http_window: Show GSI HTTP requests
+always_on_top: Always on top
+show_logs_folder: Show logs folder
+about: About
+about_0: This is a public Beta version of Aurora, there may be bugs and issues.
+about_1: Game logos and other images are owned by their respective owners.
+about_2: Some icons are used with the free license from Icons8.com
+find_us: Find us on
+exit_mode.ask: Ask
+exit_mode.minimize: Minimize
+exit_mode.exit: Exit
+mouse.right_handed: Right handed
+mouse.left_handed: Left handed
+default: Default
+keycap.default_backglow: Default (with backglow)
+keycap.default_backonly: Default (backglow only)
+keycap.colorized: Colorized
+keycap.colorized_blank: Colorized (blank)
+app_detection.windows: Windows Events (default)
+app_detection.foreground: Foreground app scan
+bitmap.best: Best
+bitmap.great: Great
+bitmap.good: Good
+bitmap.okay: Okay
+bitmap.fine: Fine
+alert_delete_text: Are you sure you wish to delete {0} '{1}'? You cannot undo this action.
+alert_delete_title: Delete {0}?
+delete: Delete
+dont_delete: Don't delete
+yes: Yes
+no: No
+alert_exit_text: Would you like to exit Aurora?

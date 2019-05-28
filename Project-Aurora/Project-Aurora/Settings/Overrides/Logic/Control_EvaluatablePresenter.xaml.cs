@@ -1,4 +1,5 @@
-﻿using System;
+using Aurora.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -35,9 +36,9 @@ namespace Aurora.Settings.Overrides.Logic {
         /// <summary>
         /// Re-creates the list collection view that is used for the expression selection list.
         /// </summary>
-        private void UpdateExpressionListItems(EvaluatableType t) {
-            ListCollectionView lcv = new ListCollectionView(EvaluatableRegistry
-                .Get(EvaluatableTypeResolver.Resolve(t)) // Get all condition types that match the required type
+        private void UpdateExpressionListItems(Type t) {
+            var lcv = new ListCollectionView(EvaluatableRegistry
+                .Get(t) // Get all condition types that match the required type
                 .OrderBy(kvp => (int)kvp.Value.Category) // Order them by the numeric value of the category (so they appear in the order specified)
                 .ThenBy(kvp => kvp.Value.Name) // Then, order the items alphabetically in their category
                 .ToList());
@@ -66,8 +67,8 @@ namespace Aurora.Settings.Overrides.Logic {
         /// <summary>
         /// Replaces the current IEvaluatable with the one on the clipboard
         /// </summary>
-        private void PasteButton_Click(object sender, RoutedEventArgs e) {
-            if (Global.Clipboard is IEvaluatable clipboardContents && MessageBox.Show("Are you sure you wish to REPLACE this expression with the one on your clipboard?", "Confirm paste", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
+        private async void PasteButton_Click(object sender, RoutedEventArgs e) {
+            if (Global.Clipboard is IEvaluatable clipboardContents && await AlertBox.Show(this, "Are you sure you wish to REPLACE this expression with the one on your clipboard?", "Confirm paste", new[] { "Don't replace", "Replace" }, AlertBoxIcon.Question) == 1) {
                 var @new = clipboardContents.Clone(); // We clone again when pasting so that if the user pastes it in two places, they aren't the same object
                 ExpressionChanged?.Invoke(this, new ExpressionChangeEventArgs { OldExpression = Expression, NewExpression = @new });
                 Expression = @new;
@@ -105,15 +106,15 @@ namespace Aurora.Settings.Overrides.Logic {
             set => SetValue(ApplicationProperty, value);
         }
 
-        // The subtype of evaluatable to restrict the user to (e.g. IEvaluatableBoolean)
+        // The subtype of evaluatable to restrict the user to (e.g. IEvaluatable<bool>)
         private static void OnEvalTypeChange(DependencyObject evaluatablePresenter, DependencyPropertyChangedEventArgs eventArgs) {
             var control = (Control_EvaluatablePresenter)evaluatablePresenter;
-            control.UpdateExpressionListItems((EvaluatableType)eventArgs.NewValue);
+            control.UpdateExpressionListItems((Type)eventArgs.NewValue);
         }
 
-        public static readonly DependencyProperty EvalTypeProperty = DependencyProperty.Register("EvalType", typeof(EvaluatableType), typeof(Control_EvaluatablePresenter), new FrameworkPropertyMetadata(EvaluatableType.All, FrameworkPropertyMetadataOptions.AffectsRender, OnEvalTypeChange));
-        public EvaluatableType EvalType {
-            get => (EvaluatableType)GetValue(EvalTypeProperty);
+        public static readonly DependencyProperty EvalTypeProperty = DependencyProperty.Register("EvalType", typeof(Type), typeof(Control_EvaluatablePresenter), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OnEvalTypeChange));
+        public Type EvalType {
+            get => (Type)GetValue(EvalTypeProperty);
             set => SetValue(EvalTypeProperty, value);
         }
         #endregion

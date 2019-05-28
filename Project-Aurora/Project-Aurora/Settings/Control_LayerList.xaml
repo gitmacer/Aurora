@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="Aurora.Settings.Control_LayerList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:Controls="clr-namespace:Aurora.Controls"
+             xmlns:Utils="clr-namespace:Aurora.Utils"
+             xmlns:Win="System.Windows"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="200">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Utils:TextCharacterLimitConv x:Key="TextCharacterLimitConv" MaxLength="24"/>
+            <Utils:IsNullToBooleanConverter x:Key="NullToBoolConv" ReturnValWhenNull="False" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        
+        <Border Background="#A5000000" CornerRadius="8" />
+        <Border Background="#54A8A8A8" CornerRadius="8" VerticalAlignment="Top" Height="25">
+            <TextBlock TextWrapping="Wrap" Text="{Binding ListTitle}" VerticalAlignment="Top" Margin="10,3,10,0"/>
+        </Border>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4">
+            <Button ToolTip="Add a new layer" Margin="2,0" Click="AddButton_Click" Style="{StaticResource Panel1Button}">
+                <DockPanel Margin="2,0">
+                    <Image Source="/Aurora;component/Resources/UIIcons/plus-30.png" Width="18" Height="18"/>
+                    <TextBlock>Add</TextBlock>
+                </DockPanel>
+            </Button>
+            <Button ToolTip="Copy the selected layer (Ctrl + C)" Margin="2,0" Click="CopyButton_Click" Style="{StaticResource Panel1Button}">
+                <Image Source="/Aurora;component/Resources/UIIcons/copy-30.png" Margin="2,0" Width="18" Height="18"/>
+            </Button>
+            <Button ToolTip="Paste layer from clipboard (Ctrl + V)" Margin="2,0" Click="PasteButton_Click" Style="{StaticResource Panel1Button}">
+                <Image Source="/Aurora;component/Resources/UIIcons/clipboard-30.png" Margin="2,0" Width="18" Height="18"/>
+            </Button>
+            <Button ToolTip="Remove selected layer (Del)" Margin="2,0" IsEnabled="{Binding Path=SelectedLayer, Converter={StaticResource NullToBoolConv}}" Click="DeleteButton_Click" Style="{StaticResource Panel1Button}">
+                <Image Source="/Aurora;component/Resources/UIIcons/delete-30.png" Margin="2,0" Width="18" Height="18" />
+            </Button>
+        </StackPanel>
+        
+        <DockPanel Grid.Row="2">
+            <StackPanel Margin="0,0,0,6" Orientation="Horizontal" DockPanel.Dock="Top" Visibility="{Binding DayNightCheckboxesVisiblity}">
+                <RadioButton GroupName="TimeSelection" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Daytime" IsChecked="True" Checked="CollectionSelection_Checked">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Aurora;component/Resources/UIIcons/sun-30.png" Height="18" HorizontalAlignment="Left" />
+                        <TextBlock Margin="4,0,0,0">Daytime</TextBlock>
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton x:Name="showSecondaryCollection" GroupName="TimeSelection" HorizontalAlignment="Left" Margin="8,0,0,0" VerticalAlignment="Top" ToolTip="Nighttime" Checked="CollectionSelection_Checked">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Aurora;component/Resources/UIIcons/moon-and-stars-30.png" Height="18" HorizontalAlignment="Left" />
+                        <TextBlock Margin="4,0,0,0">Nighttime</TextBlock>
+                    </StackPanel>
+                </RadioButton>
+            </StackPanel>
+
+            <Controls:ReorderableListBox Background="{StaticResource Panel1BackgroundBrush}" BorderThickness="0" ItemsSource="{Binding ActiveLayerCollection}" SelectedItem="{Binding Path=SelectedLayer, Mode=TwoWay}" DragElementTag="Dragger" SelectionMode="Single" DockPanel.Dock="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" KeyDown="ReorderableListBox_KeyDown">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel HorizontalAlignment="Stretch" LastChildFill="True" Margin="2,2,0,2">
+                            <CheckBox IsChecked="{Binding Path=Enabled, Mode=TwoWay}" />
+                            <Image Source="/Aurora;component/Resources/UIIcons/resize-vertical-30.png" Tag="Dragger" Cursor="SizeNS" Height="16" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0,0,5,0" ToolTip="Drag to rearrange layers">
+                                <Image.Style>
+                                    <Style TargetType="{x:Type Image}">
+                                        <Setter Property="Opacity" Value="0" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                <DataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="(Image.Opacity)" To="1" Duration="{StaticResource AnimationDuration}" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.EnterActions>
+                                                <DataTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="(Image.Opacity)" To="0" Duration="{StaticResource AnimationDuration}" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.ExitActions>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                            <TextBlock Text="{Binding Path=Name, Converter={StaticResource ResourceKey=TextCharacterLimitConv}}"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </Controls:ReorderableListBox>
+        </DockPanel>
+    </Grid>
+</UserControl>

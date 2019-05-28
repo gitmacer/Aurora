@@ -1,5 +1,6 @@
-﻿using Aurora.Profiles;
-using System;
+﻿using Aurora.Controls;
+using Aurora.Profiles;
+using Aurora.Utils;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -10,8 +11,8 @@ namespace Aurora.Settings.Overrides.Logic {
     /// <summary>
     /// Evaluatable that accesses some specified game state variables (of numeric type) and returns it.
     /// </summary>
-    [OverrideLogic("Numeric State Variable", category: OverrideLogicCategory.State)]
-    public class NumberGSINumeric : IEvaluatableNumber {
+    [Evaluatable("Numeric State Variable", category: OverrideLogicCategory.State)]
+    public class NumberGSINumeric : IEvaluatable<double> {
 
         /// <summary>Creates a new numeric game state lookup evaluatable that doesn't target anything.</summary>
         public NumberGSINumeric() { }
@@ -23,11 +24,11 @@ namespace Aurora.Settings.Overrides.Logic {
 
         // Control assigned to this evaluatable
         [Newtonsoft.Json.JsonIgnore]
-        private ComboBox control;
+        private Control_GameStateParameterPicker control;
         public Visual GetControl(Application application) {
             if (control == null) {
-                control = new ComboBox { Margin = new System.Windows.Thickness(0, 0, 0, 6) };
-                control.SetBinding(ComboBox.SelectedItemProperty, new Binding("VariablePath") { Source = this });
+                control = new Control_GameStateParameterPicker { PropertyType = PropertyType.Number, Margin = new System.Windows.Thickness(0, 0, 0, 6) };
+                control.SetBinding(Control_GameStateParameterPicker.SelectedPathProperty, new Binding("VariablePath") { Source = this, Mode = BindingMode.TwoWay });
                 SetApplication(application);
             }
             return control;
@@ -40,16 +41,14 @@ namespace Aurora.Settings.Overrides.Logic {
         /// <summary>Update the assigned control with the new application.</summary>
         public void SetApplication(Application application) {
             if (control != null)
-                control.ItemsSource = application?.ParameterLookup?
-                    .Where(kvp => Utils.TypeUtils.IsNumericType(kvp.Value.Item1))
-                    .Select(kvp => kvp.Key);
+                control.Application = application;
 
             // Check to ensure the variable path is valid
-            if (application != null && !double.TryParse(VariablePath, out _) && !string.IsNullOrWhiteSpace(VariablePath) && !application.ParameterLookup.ContainsKey(VariablePath))
+            if (application != null && !double.TryParse(VariablePath, out _) && !string.IsNullOrWhiteSpace(VariablePath) && !application.ParameterLookup.IsValidParameter(VariablePath))
                 VariablePath = string.Empty;
         }
 
-        public IEvaluatableNumber Clone() => new NumberGSINumeric { VariablePath = VariablePath };
+        public IEvaluatable<double> Clone() => new NumberGSINumeric { VariablePath = VariablePath };
         IEvaluatable IEvaluatable.Clone() => Clone();
     }
 }

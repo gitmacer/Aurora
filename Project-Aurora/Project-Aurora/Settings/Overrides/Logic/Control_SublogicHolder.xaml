@@ -4,21 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Aurora.Settings.Overrides.Logic"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="200">
     <Grid>
-        <Label Content="{Binding Title}" />
+        <Label Content="{Binding Description}" />
 
-        <ItemsControl Margin="12,28,0,26" ItemsSource="{Binding Parent.SubConditions}">
+        <ItemsControl Margin="12,28,0,26" ItemsSource="{Binding ParentExpr.SubConditions}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="6,0,0,6">
                         <Rectangle Fill="#6000" Height="4" Width="10" HorizontalAlignment="Left" VerticalAlignment="Center" />
                         <Border Margin="10,0,0,0" BorderThickness="1" BorderBrush="#6000" Background="#3000">
                             <Grid>
-                                <local:Control_EvaluatablePresenter Expression="{Binding .}" Application="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}, Path=DataContext.Application}" EvalType="Boolean" ExpressionChanged="ConditionPresenter_ConditionChanged" Margin="6,2,36,0" />
+                                <local:Control_EvaluatablePresenter Expression="{Binding .}" Application="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}, Path=DataContext.Application}" EvalType="{x:Type sys:Boolean}" ExpressionChanged="ConditionPresenter_ConditionChanged" Margin="6,2,36,0" />
                                 <Button Margin="6" HorizontalAlignment="Right" VerticalAlignment="Center" Click="DeleteButton_Click" ToolTip="Remove this subcondition">
-                                    <Image Source="/Aurora;component/Resources/Layers_Remove.png" Width="18" Height="18" Margin="2" />
+                                    <Image Source="/Aurora;component/Resources/UIIcons/delete-30.png" Width="18" Height="18" Margin="2" />
                                 </Button>
                             </Grid>
                         </Border>
@@ -32,7 +33,7 @@
 
         <Button Margin="28,0,2,2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="AddSubconditionButton_Click">
             <StackPanel Orientation="Horizontal">
-                <Image Source="/Aurora;component/Resources/Layers_Add.png" Width="18" Height="18" Margin="2" />
+                <Image Source="/Aurora;component/Resources/UIIcons/plus-30.png" Width="18" Height="18" Margin="2" />
                 <TextBlock Text="Add subcondition" VerticalAlignment="Center" Margin="0,0,4,0" />
             </StackPanel>
         </Button>

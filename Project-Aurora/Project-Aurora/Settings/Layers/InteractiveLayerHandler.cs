@@ -77,7 +77,6 @@ namespace Aurora.Settings.Layers
         [JsonIgnore]
         public float EffectSpeed { get { return Logic._EffectSpeed ?? _EffectSpeed ?? 0.0f; } }
 
-        [Overrides.LogicOverridable("Interactive Effect")]
         public InteractiveEffects? _InteractiveEffect { get; set; }
 
         [JsonIgnore]

@@ -3,6 +3,7 @@ using Aurora.Settings.Overrides.Logic;
 using Aurora.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -40,12 +41,12 @@ namespace Aurora.Settings.Layers
             // Populate comboboxs
             var triggerModeLCV = new ListCollectionView(Enum.GetValues(typeof(AnimationTriggerMode))
                 .Cast<AnimationTriggerMode>()
-                .Select(mode => new { Key = mode.GetDescription(), Value = mode, Description = mode.GetCategory() })
+                .Select(mode => new { Key = mode.GetDescription(), Value = mode, Description = mode.GetCustomAttribute<CategoryAttribute>()?.Category ?? "" })
                 .ToList()
             );
             triggerModeLCV.GroupDescriptions.Add(new PropertyGroupDescription("Description"));
             triggerModeCb.ItemsSource = triggerModeLCV;
-            stackModeCb.ItemsSource = Enum.GetValues(typeof(AnimationStackMode)).Cast<AnimationStackMode>().ToDictionary(mode => mode.GetDescription(), mode => mode);
+            stackModeCb.ItemsSource = EnumUtils.GetEnumItemsSource<AnimationStackMode>();
 
             UpdateUI();
         }
@@ -67,7 +68,6 @@ namespace Aurora.Settings.Layers
                 updownAnimationRepeat.Value = Context.Properties._AnimationRepeat;
                 triggerModeCb.SelectedValue = Context.Properties.TriggerMode;
                 triggerAnyKey.IsChecked = Context.Properties._TriggerAnyKey;
-                triggerPath.Text = Context.Properties._TriggerPath;
                 triggerKeys.Sequence = Context.Properties._TriggerKeySequence;
                 translateToKey.IsChecked = Context.Properties._KeyTriggerTranslate;
                 stackModeCb.SelectedValue = Context.Properties.StackMode;
@@ -80,6 +80,7 @@ namespace Aurora.Settings.Layers
             if (profile != null && !profileset) {
                 this.profile = profile;
                 triggerEvaluatable.Application = profile;
+                triggerPath.Application = profile;
                 UpdatePathCombobox();
                 profileset = true;
             }
@@ -96,13 +97,7 @@ namespace Aurora.Settings.Layers
             triggerPathItemsAreBoolean = isTriggerBoolean;
 
             // Get a list of the parameters. If trigger is boolean mode, filters to only boolean values, else does numeric values
-            triggerPath.ItemsSource = profile?.ParameterLookup?
-                .Where(kvp => isTriggerBoolean
-                    ? kvp.Value.Item1 == typeof(bool)
-                    : TypeUtils.IsNumericType(kvp.Value.Item1)
-                )
-                .Select(kvp => kvp.Key)
-                .ToList();
+            triggerPath.PropertyType = isTriggerBoolean ? PropertyType.Boolean : PropertyType.Number;
         }
 
         private void btnEditAnimation_Click(object sender, RoutedEventArgs e) {
@@ -173,13 +168,13 @@ namespace Aurora.Settings.Layers
             UpdateUI();
 
             // If the evaluatable is not the correct type or it is null, then create the default Evaluatable for it
-            if (AnimationLayerHandler.IsTriggerEvaluatableNumericValueBased(selectedItem) && !TypeUtils.IsInterface(Context.Properties._EvaluatableTrigger?.GetType(), typeof(IEvaluatableNumber)))
-                Context.Properties._EvaluatableTrigger = EvaluatableTypeResolver.GetDefault(EvaluatableType.Number);
-            else if (AnimationLayerHandler.IsTriggerEvaluatableBooleanValueBased(selectedItem) && !TypeUtils.IsInterface(Context.Properties._EvaluatableTrigger?.GetType(), typeof(IEvaluatableBoolean)))
-                Context.Properties._EvaluatableTrigger = EvaluatableTypeResolver.GetDefault(EvaluatableType.Boolean);
+            if (AnimationLayerHandler.IsTriggerEvaluatableNumericValueBased(selectedItem) && !TypeUtils.IsInterface(Context.Properties._EvaluatableTrigger?.GetType(), typeof(IEvaluatable<double>)))
+                Context.Properties._EvaluatableTrigger = EvaluatableDefaults.Get<double>();
+            else if (AnimationLayerHandler.IsTriggerEvaluatableBooleanValueBased(selectedItem) && !TypeUtils.IsInterface(Context.Properties._EvaluatableTrigger?.GetType(), typeof(IEvaluatable<bool>)))
+                Context.Properties._EvaluatableTrigger = EvaluatableDefaults.Get<bool>();
 
             // Update the evaluatable control
-            triggerEvaluatable.EvalType = AnimationLayerHandler.IsTriggerEvaluatableNumericValueBased(selectedItem) ? EvaluatableType.Number : EvaluatableType.Boolean;
+            triggerEvaluatable.EvalType = AnimationLayerHandler.IsTriggerEvaluatableNumericValueBased(selectedItem) ? typeof(double) : typeof(bool);
             triggerEvaluatable.Expression = Context.Properties._EvaluatableTrigger;
         }
 
@@ -189,7 +184,7 @@ namespace Aurora.Settings.Layers
 
             // Only show trigger path when one of the path-like modes is set
             triggerGridLayout.RowDefinitions[1].Height = new GridLength(AnimationLayerHandler.IsTriggerNumericValueBased(trigMode) || AnimationLayerHandler.IsTriggerBooleanValueBased(trigMode) ? 28 : 0);
-            // Only show IEvaluatable when one of the evaluatable modes is set
+            // Only show IEvaluatable<object>when one of the evaluatable modes is set
             triggerGridLayout.RowDefinitions[2].Height = new GridLength(0, AnimationLayerHandler.IsTriggerEvaluatableNumericValueBased(trigMode) || AnimationLayerHandler.IsTriggerEvaluatableBooleanValueBased(trigMode) ? GridUnitType.Auto : GridUnitType.Pixel);
             // Only show tigger keys when one of the key-like modes is set
             triggerGridLayout.RowDefinitions[3].Height = new GridLength(AnimationLayerHandler.IsTriggerKeyBased(trigMode) ? 160 : 0);
@@ -205,11 +200,6 @@ namespace Aurora.Settings.Layers
 
             // Update the combobox
             UpdatePathCombobox();
-        }
-
-        private void triggerPath_TextChanged(object sender, TextChangedEventArgs e) {
-            if (CanSet)
-                Context.Properties._TriggerPath = (sender as ComboBox).Text;
         }
 
         private void triggerAnyKey_Checked(object sender, RoutedEventArgs e) {

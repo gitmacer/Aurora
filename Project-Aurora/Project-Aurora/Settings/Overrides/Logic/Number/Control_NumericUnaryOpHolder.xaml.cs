@@ -23,12 +23,7 @@ namespace Aurora.Settings.Overrides.Logic {
 
         /// <summary>Creates a new unary operation control using the given Enum type as a source for the possible operators to choose from.</summary>
         public Control_NumericUnaryOpHolder(Profiles.Application application, Type enumType) : this(application) {
-            OperatorList = Enum.GetValues(enumType)
-                .Cast<object>()
-                .ToDictionary(
-                    op => enumType.GetMember(op.ToString()).FirstOrDefault()?.GetCustomAttribute<DescriptionAttribute>()?.Description ?? op.ToString(),
-                    op => op
-                );
+            OperatorList = Utils.EnumUtils.GetEnumItemsSource(enumType).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
         /// <summary>Creates a new unary opeartion control using the given string as the name of the operator, disallowing the user to choose an option.</summary>
@@ -41,9 +36,9 @@ namespace Aurora.Settings.Overrides.Logic {
         public string StaticOperator { get; set; } = null;
 
         /// <summary>The dependency property that can be used to access the single operand for this operation.</summary>
-        public static readonly DependencyProperty OperandProperty = DependencyProperty.Register("Operand", typeof(IEvaluatableNumber), typeof(Control_NumericUnaryOpHolder), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
-        public IEvaluatableNumber Operand {
-            get => (IEvaluatableNumber)GetValue(OperandProperty);
+        public static readonly DependencyProperty OperandProperty = DependencyProperty.Register("Operand", typeof(IEvaluatable<double>), typeof(Control_NumericUnaryOpHolder), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+        public IEvaluatable<double> Operand {
+            get => (IEvaluatable<double>)GetValue(OperandProperty);
             set => SetValue(OperandProperty, value);
         }
 
@@ -58,11 +53,4 @@ namespace Aurora.Settings.Overrides.Logic {
             Application = application;
         }
     }
-
-    /// <summary>Simple converter that returns true if the given value is non-null.</summary>
-    public class NullableToVisibilityConverter : System.Windows.Data.IValueConverter {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value == null ? Visibility.Collapsed : Visibility.Visible;
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
-    }
-
 }

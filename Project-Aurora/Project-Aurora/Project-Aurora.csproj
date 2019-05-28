@@ -49,11 +49,12 @@
     <PlatformTarget>x64</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Project-Aurora.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>documentation\Aurora.XML</DocumentationFile>
-    <WarningLevel>3</WarningLevel>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>..\..\Build\Release\</OutputPath>
@@ -63,12 +64,13 @@
     <PlatformTarget>x64</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Project-Aurora.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>
     </DocumentationFile>
     <WarningLevel>3</WarningLevel>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
@@ -297,13 +299,20 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Infragistics.Themes.MetroDark.Wpf.1.0.0\lib\net40\WPFToolkit.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
     </Reference>
-    <Reference Include="Xceed.Wpf.Toolkit, Version=2.9.15603.14400, Culture=neutral, PublicKeyToken=ba83ff368b7563c6, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xceed.Wpf.Toolkit.2.9.15603.14400\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -313,7 +322,6 @@
     <Compile Include="ConfigUI.xaml.cs">
       <DependentUpon>ConfigUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ArrangeListBox.cs" />
     <Compile Include="Controls\ColorZones.xaml.cs">
       <DependentUpon>ColorZones.xaml</DependentUpon>
     </Compile>
@@ -334,6 +342,35 @@
     </Compile>
     <Compile Include="Controls\Control_FieldPresenter.xaml.cs">
       <DependentUpon>Control_FieldPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AlertBox.xaml.cs">
+      <DependentUpon>AlertBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SpacedStackPanel.cs" />
+    <Compile Include="Profiles\Skype\Control_Skype.xaml.cs">
+      <DependentUpon>Control_Skype.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles\Skype\SkypeProfile.cs" />
+    <Compile Include="Profiles\Skype\SkypeApplication.cs" />
+    <Compile Include="Profiles\Skype\State_SkypeOverlay.cs" />
+    <Compile Include="Controls\Control_GameStateParameterPicker.xaml.cs">
+      <DependentUpon>Control_GameStateParameterPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Configuration.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Configuration.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Control_LayerList.xaml.cs">
+      <DependentUpon>Control_LayerList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Control_GradientEditor.xaml.cs">
+      <DependentUpon>Control_GradientEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Control_PluginManager.xaml.cs">
       <DependentUpon>Control_PluginManager.xaml</DependentUpon>
@@ -371,6 +408,7 @@
     <Compile Include="Controls\LayerEditor.xaml.cs">
       <DependentUpon>LayerEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ReorderableListBox.cs" />
     <Compile Include="Devices\AtmoOrb\AtmoOrbDevice.cs" />
     <Compile Include="Devices\Clevo\ClevoSetKBLED.cs" />
     <Compile Include="Devices\Clevo\ClevoDevice.cs" />
@@ -598,39 +636,37 @@
     <Compile Include="Profiles\Witcher3\Witcher3Profile.cs" />
     <Compile Include="Profiles\Witcher3\GSI\GameState_Witcher3.cs" />
     <Compile Include="Profiles\Witcher3\GSI\Nodes\Player.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+    <Compile Include="Settings\Overrides\Logic\Color\Control_ColorFromValues.xaml.cs">
+      <DependentUpon>Control_ColorFromValues.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\GreyscaleEffect.cs" />
+    <Compile Include="Settings\Localization\Localization.cs" />
     <Compile Include="Settings\Overrides\Logic\Boolean\Boolean_PeripheralInput.cs" />
+    <Compile Include="Settings\Overrides\Logic\Color\Color_Ctors.cs" />
     <Compile Include="Settings\Overrides\Logic\Control_BinaryOperationHolder.xaml.cs">
       <DependentUpon>Control_BinaryOperationHolder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\Overrides\Logic\Generic\Control_IfElse.xaml.cs">
+      <DependentUpon>Control_IfElse.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Overrides\Logic\Generic\IfElseIf.cs" />
+    <Compile Include="Settings\Overrides\Logic\KeySequence\Control_KeySequenceFromValues.xaml.cs">
+      <DependentUpon>Control_KeySequenceFromValues.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Overrides\Logic\KeySequence\KeySequence_Ctors.cs" />
     <Compile Include="Settings\Overrides\Logic\Number\Control_NumericMap.xaml.cs">
       <DependentUpon>Control_NumericMap.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Overrides\Logic\Number\Control_NumericUnaryOpHolder.xaml.cs">
       <DependentUpon>Control_NumericUnaryOpHolder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Overrides\Logic\Control_OverrideDynamicValue.xaml.cs">
-      <DependentUpon>Control_OverrideDynamicValue.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Settings\Overrides\Logic\Number\Number_GameState.cs" />
     <Compile Include="Settings\Overrides\Logic\Number\Number_Waves.cs" />
     <Compile Include="Settings\Overrides\Logic\Number\Operators.cs" />
-    <Compile Include="Settings\Overrides\Logic\Control_OverrideLookupTable.xaml.cs">
-      <DependentUpon>Control_OverrideLookupTable.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Settings\Overrides\Logic\EvaluatableRegistry.cs" />
-    <Compile Include="Settings\Overrides\Logic\IOverrideLogic.cs" />
     <Compile Include="Settings\Overrides\Logic\Number\Number_Maths.cs" />
-    <Compile Include="Settings\Overrides\Logic\OverrideDynamicValue.cs" />
-    <Compile Include="Settings\Overrides\Logic\OverrideLogicAttribute.cs" />
+    <Compile Include="Settings\Overrides\Logic\EvaluatableAttribute.cs" />
     <Compile Include="Settings\Overrides\Logic\Boolean\Boolean_GameState.cs" />
-    <Compile Include="Settings\Overrides\Logic\Boolean\Control_BooleanGSIBoolean.xaml.cs">
-      <DependentUpon>Control_BooleanGSIBoolean.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Settings\Overrides\Logic\Boolean\Control_BooleanGSINumeric.xaml.cs">
       <DependentUpon>Control_BooleanGSINumeric.xaml</DependentUpon>
     </Compile>
@@ -645,8 +681,6 @@
       <DependentUpon>Control_SublogicHolder.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Overrides\Logic\IEvaluatable.cs" />
-    <Compile Include="Settings\Overrides\Logic\OverrideLogicBuilder.cs" />
-    <Compile Include="Settings\Overrides\Logic\OverrideLookupTable.cs" />
     <Compile Include="Settings\Overrides\LogicOverridableAttribute.cs" />
     <Compile Include="Settings\Overrides\Logic\String\Operators.cs" />
     <Compile Include="Settings\Overrides\Logic\String\String_Constant.cs" />
@@ -681,6 +715,7 @@
       <DependentUpon>Control_ROTTombRaider.xaml</DependentUpon>
     </Compile>
     <Compile Include="Profiles\ROT Tomb Raider\ROTTombRaiderApplication.cs" />
+    <Compile Include="Settings\ThemeManager.cs" />
     <Compile Include="Settings\Window_GSIHttpDebug.xaml.cs">
       <DependentUpon>Window_GSIHttpDebug.xaml</DependentUpon>
     </Compile>
@@ -690,8 +725,13 @@
     <Compile Include="Settings\Window_ProcessSelection.xaml.cs">
       <DependentUpon>Window_ProcessSelection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Theme\Addons\TextboxAttachedProperties.cs" />
+    <Compile Include="Utils\BrushAnimation.cs" />
+    <Compile Include="Utils\Converters.cs" />
     <Compile Include="Utils\DesktopUtils.cs" />
+    <Compile Include="Utils\GridHelper.cs" />
     <Compile Include="Utils\InputEvents.cs" />
+    <Compile Include="Utils\LinqExtensions.cs" />
     <Compile Include="Utils\MathUtils.cs" />
     <Compile Include="Utils\MessagePumpThread.cs" />
     <Compile Include="Utils\InputInterceptor.cs" />
@@ -826,11 +866,20 @@
     </Compile>
     <Compile Include="Profiles\Metro Last Light\MetroLLApplication.cs" />
     <Compile Include="Profiles\Metro Last Light\MetroLLProfile.cs" />
-    <Compile Include="Profiles\Overlays\SkypeOverlay\Event_SkypeOverlay.cs" />
-    <Compile Include="Profiles\Overlays\SkypeOverlay\SkypeOverlaySettings.cs" />
-    <Compile Include="Profiles\Overlays\SkypeOverlay\State_SkypeOverlay.cs" />
-    <Compile Include="Profiles\Overlays\VolumeOverlay\Event_VolumeOverlay.cs" />
-    <Compile Include="Profiles\Overlays\VolumeOverlay\VolumeOverlaySettings.cs" />
+    <Content Include="Localization\en-US\icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Localization\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Profiles\Overlays\SkypeOverlay\Event_SkypeOverlay.cs" />
+    <Content Include="Profiles\Overlays\SkypeOverlay\SkypeOverlaySettings.cs" />
+    <Content Include="Profiles\Overlays\SkypeOverlay\State_SkypeOverlay.cs" />
+    <None Include="Localization\en-US\Aurora.lang">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Profiles\Overlays\VolumeOverlay\Event_VolumeOverlay.cs" />
+    <None Include="Profiles\Overlays\VolumeOverlay\VolumeOverlaySettings.cs" />
     <Compile Include="Profiles\Payday 2\Layers\Control_PD2StatesLayer.xaml.cs">
       <DependentUpon>Control_PD2StatesLayer.xaml</DependentUpon>
     </Compile>
@@ -922,6 +971,7 @@
     <Compile Include="Devices\SteelSeries\USBHIDCodes.cs" />
     <Compile Include="Utils\JSONUtils.cs" />
     <Compile Include="Utils\MouseUtils.cs" />
+    <Compile Include="Utils\ObservableDictionary.cs" />
     <Compile Include="Utils\PointerUpdateUtils.cs" />
     <Compile Include="Utils\ProcessUtils.cs" />
     <Compile Include="Utils\ActiveProcessMonitor.cs" />
@@ -1206,7 +1256,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="Settings\ColorZone.cs" />
-    <Compile Include="Settings\Configuration.cs" />
+    <Compile Include="Settings\ConfigManager.cs" />
     <Compile Include="Devices\DeviceManager.cs" />
     <Compile Include="Devices\Corsair\CorsairDevice.cs" />
     <Compile Include="Devices\Device.cs" />
@@ -1343,9 +1393,6 @@
     <Compile Include="Settings\Layers\SolidFillLayerHandler.cs" />
     <Compile Include="Settings\ScriptBase.cs" />
     <Compile Include="Settings\VariableRegistry.cs" />
-    <Compile Include="Settings\Control_LayerManager.xaml.cs">
-      <DependentUpon>Control_LayerManager.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Settings\Control_ProfileManager.xaml.cs">
       <DependentUpon>Control_ProfileManager.xaml</DependentUpon>
     </Compile>
@@ -1387,6 +1434,7 @@
     <Compile Include="Utils\KeyUtils.cs" />
     <Compile Include="Utils\MemoryReader.cs" />
     <Compile Include="Utils\MemoryUtils.cs" />
+    <Compile Include="Utils\RunningProcessMonitor.cs" />
     <Compile Include="Utils\SteamUtils.cs" />
     <Compile Include="Utils\ThreadPriorityChanger.cs" />
     <Compile Include="Utils\Time.cs" />
@@ -1461,8 +1509,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Resources\deadcells_128x128.png" />
-    <Resource Include="Resources\Layers_Copy.png" />
-    <Resource Include="Resources\Layers_Paste.png" />
     <Resource Include="Resources\Subnautica.png" />
     <Content Include="Logi\GHUB\LogitechLed.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1472,15 +1518,54 @@
     </Content>
     <Resource Include="Resources\ch_128x128.png" />
     <Resource Include="Resources\re2_256x256.png" />
-    <Resource Include="Resources\LayerConditions_icon.png" />
-    <Resource Include="Resources\icons8-numbers-30.png" />
-    <Resource Include="Resources\icons8-paint-palette-30.png" />
-    <Resource Include="Resources\icons8-diamonds-30.png" />
-    <Resource Include="Resources\icons8-checked-checkbox-30.png" />
-    <Resource Include="Resources\Question_Help.png" />
-    <Resource Include="Resources\icons8-keyboard-30.png" />
+    <Resource Include="Resources\UIIcons\numbers-30.png" />
+    <Resource Include="Resources\UIIcons\paint-palette-30.png" />
+    <Resource Include="Resources\UIIcons\diamonds-30.png" />
+    <Resource Include="Resources\UIIcons\checked-checkbox-30.png" />
+    <Resource Include="Resources\UIIcons\keyboard-30.png" />
     <Resource Include="Resources\osu_256x256.png" />
     <Resource Include="Profiles\Osu\GSI\OsuSyncAuroraPlugin.dll" />
+    <Resource Include="Resources\Skype_300x300.png" />
+    <Resource Include="Resources\UIIcons\copy-30.png" />
+    <Resource Include="Resources\UIIcons\clipboard-30.png" />
+    <Resource Include="Resources\UIIcons\delete-30.png" />
+    <Resource Include="Resources\UIIcons\plus-30.png" />
+    <Resource Include="Resources\UIIcons\eye-30.png" />
+    <Resource Include="Resources\UIIcons\hide-30.png" />
+    <Resource Include="Resources\UIIcons\maintenance-30.png" />
+    <Resource Include="Resources\GreyscaleShader.ps" />
+    <None Include="Project-Aurora.ruleset" />
+    <None Include="Resources\UIIcons\_icons8.txt" />
+    <Resource Include="Resources\UIIcons\downloads-30.png" />
+    <Resource Include="Resources\UIIcons\uploads-30.png" />
+    <Resource Include="Resources\UIIcons\ellipsis-30.png" />
+    <Resource Include="Resources\UIIcons\maximize-window-30.png" />
+    <Resource Include="Resources\UIIcons\minimize-window-30.png" />
+    <Resource Include="Resources\UIIcons\questions-30.png" />
+    <Resource Include="Resources\UIIcons\restore-window-30.png" />
+    <Resource Include="Resources\UIIcons\stacked-organizational-chart-30.png" />
+    <Resource Include="Resources\UIIcons\support-30.png" />
+    <Resource Include="Resources\UIIcons\resize-vertical-30.png" />
+    <Resource Include="Resources\UIIcons\moon-and-stars-30.png" />
+    <Resource Include="Resources\UIIcons\sun-30.png" />
+    <Resource Include="Resources\UIIcons\collapse-arrow-30.png" />
+    <Resource Include="Resources\UIIcons\expand-arrow-30.png" />
+    <Resource Include="Resources\UIIcons\font-size-30.png" />
+    <Resource Include="Resources\UIIcons\error-50.png" />
+    <Resource Include="Resources\UIIcons\help-50.png" />
+    <Resource Include="Resources\UIIcons\info-50.png" />
+    <Resource Include="Resources\UIIcons\ok-50.png" />
+    <Resource Include="Resources\UIIcons\warning-50.png" />
+    <Resource Include="Resources\UIIcons\trash-can-50.png" />
+    <Resource Include="Resources\UIIcons\discord-24.png" />
+    <Resource Include="Resources\UIIcons\github-32.png" />
+    <Resource Include="Resources\UIIcons\steam-26.png" />
+    <Resource Include="Resources\UIIcons\puzzle-30.png" />
+    <Resource Include="Resources\UIIcons\search-30.png" />
+    <Content Include="Settings\Configuration.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Configuration.cs</LastGenOutput>
+    </Content>
     <Content Include="wooting-rgb-sdk.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1570,6 +1655,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Control_FieldPresenter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AlertBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Profiles\Skype\Control_Skype.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Control_GameStateParameterPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\Control_LayerList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Control_GradientEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1949,7 +2054,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\Overrides\Logic\Boolean\Control_BooleanGSIBoolean.xaml">
+    <Page Include="Settings\Localization\LocalizedDescriptionItemTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\Overrides\Logic\Color\Control_ColorFromValues.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1965,19 +2074,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Settings\Overrides\Logic\Generic\Control_IfElse.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Settings\Overrides\Logic\KeySequence\Control_KeySequenceFromValues.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Settings\Overrides\Logic\Number\Control_NumericMap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\Overrides\Logic\Number\Control_NumericUnaryOpHolder.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\Overrides\Logic\Control_OverrideDynamicValue.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\Overrides\Logic\Control_OverrideLookupTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -2121,10 +2230,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\Control_LayerManager.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Settings\Control_ProfileManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -2153,25 +2258,65 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\MetroDark\MetroDark.MSControls.Core.Implicit.xaml">
+    <Page Include="Theme\AuroraTheme\Slider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\MetroDark\MetroDark.MSControls.Toolkit.Implicit.xaml">
+    <Page Include="Theme\AuroraTheme\UpDowns.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\MetroDark\Styles.Shared.xaml">
+    <Page Include="Theme\AuroraTheme\ColorPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\MetroDark\Styles.WPF.xaml">
+    <Page Include="Theme\AuroraTheme\TabControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\MetroDark\Theme.Colors.xaml">
+    <Page Include="Theme\AuroraTheme\Textbox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\AuroraTheme\Listbox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\AuroraTheme\Combobox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\AuroraTheme\Checkboxes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\AuroraTheme\TextElements.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\AuroraTheme\Buttons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\BaseThemeVariables.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\AuroraAppTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\AuroraTheme\Tooltip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\AuroraTheme\ContextMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Theme\AuroraTheme\ScrollBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -2203,7 +2348,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\rocketleague_256x256.png" />
-    <Resource Include="Resources\settings_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\csgo_64x64.png" />
@@ -2221,14 +2365,9 @@
     <Resource Include="Resources\Win64\Aurora-LogiLEDWrapper.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\AddProfile_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Profiles\Subnautica\Layers\" />
     <Folder Include="Properties\DataSources\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\RemoveProfile_Icon.png" />
+    <Folder Include="Themes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CroccatTalkWrapper\win32-x86-64\talkfx-c.dll">
@@ -2288,18 +2427,9 @@
     <Content Include="kb_layouts\Extra Features\images\SteelSeries_Apex_logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Resources\Not Visible.png" />
-    <Resource Include="Resources\Visible.png" />
     <Resource Include="Resources\Daytime_Icon.png" />
     <Resource Include="Resources\Nighttime_Icon.png" />
-    <Resource Include="Resources\Layers_Drag.png" />
-    <Resource Include="Resources\Layers_Add.png" />
-    <Resource Include="Resources\Layers_Remove.png" />
-    <Resource Include="Resources\LayerConfig_icon.png" />
     <Resource Include="Resources\AnimationEditor_ScrubberTop.png" />
-    <Resource Include="Resources\Import_Icon.png" />
-    <Resource Include="Resources\Export_Icon.png" />
-    <Resource Include="Resources\Save_Icon.png" />
     <Resource Include="Resources\FreeForm_ManualColor.png" />
     <Resource Include="Resources\Borderlands2_256x256.png" />
     <Resource Include="Resources\rot_tombraider.png" />
@@ -2376,6 +2506,9 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.6.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.6.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
 
@@ -2390,4 +2523,17 @@
   </Target>
 
   -->
+  <!-- Removes Avalon. Note that if one of these languages is added to Aurora's localization, it must be removed from here else the satellite resource file will be deleted. -->
+  <Target Name="AfterPackage" AfterTargets="CopyAllFilesToSingleFolderForPackage" />
+  <ItemGroup>
+    <FluentValidationExcludedCultures Include="cs;da;de;es;fa;fi;fr;it;ko;mk;nl;pl;pt;ru;sv;tr;zh-CN">
+      <InProject>false</InProject>
+    </FluentValidationExcludedCultures>
+  </ItemGroup>
+  <Target Name="RemoveTranslationsAfterBuild" AfterTargets="AfterBuild">
+    <RemoveDir Directories="@(FluentValidationExcludedCultures->'$(OutputPath)%(Filename)')" />
+  </Target>
+  <Target Name="RemoveTranslationsAfterPackage" AfterTargets="AfterPackage">
+    <RemoveDir Directories="@(FluentValidationExcludedCultures->'$(_PackageTempDir)\$(OutputPath)%(Filename)')" />
+  </Target>
 </Project>

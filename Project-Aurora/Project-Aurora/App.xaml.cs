@@ -19,6 +19,7 @@ using SharpDX.RawInput;
 using NLog;
 using System.Reflection;
 using System.Text;
+using Aurora.Controls;
 
 namespace Aurora
 {
@@ -88,7 +89,7 @@ namespace Aurora
         public static PluginManager PluginManager;
         public static LightingStateManager LightingStateManager;
         public static NetworkListener net_listener;
-        public static Configuration Configuration;
+        public static Configuration Configuration { get; set; }
         public static DeviceManager dev_manager;
         public static KeyboardLayoutManager kbLayout;
         public static Effects effengine;
@@ -215,7 +216,7 @@ namespace Aurora
                             }
                             catch (Exception exc)
                             {
-                                System.Windows.MessageBox.Show("Could not patch Logitech LED SDK. Error: \r\n\r\n" + exc, "Aurora Error");
+                                AlertBox.Show("Could not patch Logitech LED SDK. Error: \r\n\r\n" + exc, "Error", icon: AlertBoxIcon.Error);
                             }
 
                             Environment.Exit(0);
@@ -252,18 +253,15 @@ namespace Aurora
                 catch (Exception exc)
                 {
                     Global.logger.Error("Exception during ConfigManager.Load(). Error: " + exc);
-                    System.Windows.MessageBox.Show("Exception during ConfigManager.Load().Error: " + exc.Message + "\r\n\r\n Default configuration loaded.", "Aurora - Error");
+                    AlertBox.Show("Exception during ConfigManager.Load().Error: " + exc.Message + "\r\n\r\n Default configuration loaded.", "Error", icon: AlertBoxIcon.Error);
 
                     Global.Configuration = new Configuration();
                 }
-
-                Global.Configuration.PropertyChanged += (sender, eventArgs) => {
-                    ConfigManager.Save(Global.Configuration);
-                };
+                Global.Configuration.PropertyChanged += (sender, e) => ConfigManager.Save(Global.Configuration);
 
                 Process.GetCurrentProcess().PriorityClass = Global.Configuration.HighPriority ? ProcessPriorityClass.High : ProcessPriorityClass.Normal;
 
-                if (Global.Configuration.updates_check_on_start_up && !ignore_update)
+                if (Global.Configuration.UpdatesCheckOnStartup && !ignore_update)
                 {
                     string updater_path = System.IO.Path.Combine(Global.ExecutingDirectory, "Aurora-Updater.exe");
 
@@ -292,7 +290,6 @@ namespace Aurora
 
                 Global.logger.Info("Loading Input Hooking");
                 Global.InputEvents = new InputEvents();
-                Global.InputEvents.KeyDown += InputEventsOnKeyDown;
                 Global.Configuration.PropertyChanged += SetupVolumeAsBrightness;
                 SetupVolumeAsBrightness(Global.Configuration,
                     new PropertyChangedEventArgs(nameof(Global.Configuration.UseVolumeAsBrightness)));
@@ -331,27 +328,19 @@ namespace Aurora
                 catch (Exception exc)
                 {
                     Global.logger.Error("GameStateListener Exception, " + exc);
-                    System.Windows.MessageBox.Show("GameStateListener Exception.\r\n" + exc);
+                    AlertBox.Show("GameStateListener Exception.\r\n" + exc, "Error", icon: AlertBoxIcon.Error);
                     Environment.Exit(0);
                 }
 
                 if (!Global.net_listener.Start())
                 {
                     Global.logger.Error("GameStateListener could not start");
-                    System.Windows.MessageBox.Show("GameStateListener could not start. Try running this program as Administrator.\r\nExiting.");
+                    AlertBox.Show("GameStateListener could not start. Try running this program as Administrator.\r\nExiting.", "Error", icon: AlertBoxIcon.Error);
                     Environment.Exit(0);
                 }
-
                 Global.logger.Info("Listening for game integration calls...");
 
-                Global.logger.Info("Loading ResourceDictionaries...");
-                this.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("Themes/MetroDark/MetroDark.MSControls.Core.Implicit.xaml", UriKind.Relative) });
-                this.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("Themes/MetroDark/MetroDark.MSControls.Toolkit.Implicit.xaml", UriKind.Relative) });
-                Global.logger.Info("Loaded ResourceDictionaries");
-
-
                 Global.logger.Info("Loading ConfigUI...");
-
                 MainWindow = new ConfigUI();
                 ((ConfigUI)MainWindow).Display();
             }
@@ -370,17 +359,8 @@ namespace Aurora
                 catch
                 {
                     //Global.logger.LogLine("Aurora is already running.", Logging_Level.Error);
-                    System.Windows.MessageBox.Show("Aurora is already running.\r\nExiting.", "Aurora - Error");
+                    AlertBox.Show("Aurora is already running.\r\nExiting.", "Error", icon: AlertBoxIcon.Error);
                 }
-            }
-        }
-
-        private static void InputEventsOnKeyDown(object sender, KeyboardInputEventArgs e)
-        {
-            if (e.Key == Keys.VolumeUp || e.Key == Keys.VolumeDown)
-            {
-                Global.LightingStateManager.AddOverlayForDuration(
-                    new Profiles.Overlays.Event_VolumeOverlay(), Global.Configuration.volume_overlay_settings.delay * 1000);
             }
         }
 
@@ -415,8 +395,6 @@ namespace Aurora
                         float brightness = Global.Configuration.GlobalBrightness;
                         brightness += keys == Keys.VolumeUp ? 0.05f : -0.05f;
                         Global.Configuration.GlobalBrightness = Math.Max(0f, Math.Min(1f, brightness));
-
-                        ConfigManager.Save(Global.Configuration);
                     }
                 }
                 );
@@ -463,7 +441,7 @@ namespace Aurora
             LogManager.Flush();
 
             
-            System.Windows.MessageBox.Show("Aurora fatally crashed. Please report the follow to author: \r\n\r\n" + exc, "Aurora has stopped working");
+            AlertBox.Show("Aurora fatally crashed. Please report the follow to author: \r\n\r\n" + exc, "Aurora has stopped working", icon: AlertBoxIcon.Error);
             //Perform exit operations
             System.Windows.Application.Current.Shutdown();
         }
@@ -477,7 +455,7 @@ namespace Aurora
                 e.Handled = true;
             else
                 throw exc;
-            System.Windows.MessageBox.Show("Aurora fatally crashed. Please report the follow to author: \r\n\r\n" + exc, "Aurora has stopped working");
+            AlertBox.Show("Aurora fatally crashed. Please report the follow to author: \r\n\r\n" + exc, "Aurora has stopped working", icon: AlertBoxIcon.Error);
             //Perform exit operations
             System.Windows.Application.Current.Shutdown();
         }
@@ -493,7 +471,7 @@ namespace Aurora
             if (!isElevated)
             {
                 Global.logger.Error("Program does not have admin rights");
-                System.Windows.MessageBox.Show("Program does not have admin rights");
+                AlertBox.Show("Program does not have admin rights", "Error", icon: AlertBoxIcon.Error);
                 Environment.Exit(1);
             }
 
@@ -569,7 +547,7 @@ namespace Aurora
             }
 
             Global.logger.Info("Logitech LED SDK patched successfully");
-            System.Windows.MessageBox.Show("Logitech LED SDK patched successfully");
+            AlertBox.Show("Logitech LED SDK patched successfully", "Success", icon: AlertBoxIcon.Success);
 
             //Environment.Exit(0);
         }

@@ -2,6 +2,7 @@
 using Aurora.EffectsEngine;
 using Aurora.EffectsEngine.Animations;
 using Aurora.Profiles;
+using Aurora.Settings.Overrides;
 using Aurora.Settings.Overrides.Logic;
 using Aurora.Utils;
 using Newtonsoft.Json;
@@ -97,6 +98,8 @@ namespace Aurora.Settings.Layers
         }
     }
 
+    [LogicOverrideIgnoreProperty("_PrimaryColor")]
+    [LogicOverrideIgnoreProperty("_SecondaryColor")]
     public class AnimationLayerHandler : LayerHandler<AnimationLayerHandlerProperties> {
 
         private List<RunningAnimation> runningAnimations = new List<RunningAnimation>();
@@ -214,7 +217,7 @@ namespace Aurora.Settings.Layers
             } else if (IsTriggerNumericValueBased(Properties.TriggerMode) || IsTriggerEvaluatableNumericValueBased(Properties.TriggerMode)) {
                 // Evaluate the evaluatable or the game state path and retrieve the double
                 double resolvedTriggerValue = IsTriggerEvaluatableNumericValueBased(Properties.TriggerMode)
-                    ? ((IEvaluatableNumber)Properties.EvaluatableTrigger)?.Evaluate(gamestate) ?? 0 // Evaluatable may be null, so we need to account for that
+                    ? ((IEvaluatable<double>)Properties.EvaluatableTrigger)?.Evaluate(gamestate) ?? 0 // Evaluatable may be null, so we need to account for that
                     : GameStateUtils.TryGetDoubleFromState(gamestate, Properties.TriggerPath);
 
                 // Check to see if a gamestate value change should trigger the animation
@@ -241,7 +244,7 @@ namespace Aurora.Settings.Layers
             } else {
                 // Evaluatable the boolean, either as an evaluatable or a game state variable.
                 bool resolvedTriggerValue = IsTriggerEvaluatableBooleanValueBased(Properties.TriggerMode)
-                    ? ((IEvaluatableBoolean)Properties.EvaluatableTrigger)?.Evaluate(gamestate) ?? false // Evaluatable may be null, so we need to account for that
+                    ? ((IEvaluatable<bool>)Properties.EvaluatableTrigger)?.Evaluate(gamestate) ?? false // Evaluatable may be null, so we need to account for that
                     : GameStateUtils.TryGetBoolFromState(gamestate, Properties.TriggerPath);
 
                 switch (Properties.TriggerMode) {
@@ -290,7 +293,7 @@ namespace Aurora.Settings.Layers
 
         public override void SetApplication(Application profile) {
             // Check to ensure the property specified actually exists
-            if (profile != null && !string.IsNullOrWhiteSpace(Properties._TriggerPath) && !profile.ParameterLookup.ContainsKey(Properties._TriggerPath))
+            if (profile != null && !string.IsNullOrWhiteSpace(Properties._TriggerPath) && !profile.ParameterLookup.IsValidParameter(Properties._TriggerPath))
                 Properties._TriggerPath = string.Empty;
 
             // Tell the control to update (will update the combobox with the possible variable paths)

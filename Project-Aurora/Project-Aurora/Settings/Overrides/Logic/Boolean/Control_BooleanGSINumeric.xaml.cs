@@ -15,19 +15,11 @@ namespace Aurora.Settings.Overrides.Logic {
             InitializeComponent();
             DataContext = context;
             SetApplication(application);
-
-            OperatorCb.ItemsSource = Enum.GetValues(typeof(ComparisonOperator))
-                .Cast<ComparisonOperator>()
-                .Select(op => new {
-                    Label = typeof(ComparisonOperator).GetMember(op.ToString()).FirstOrDefault()?.GetCustomAttribute<DescriptionAttribute>()?.Description,
-                    Value = op
-                });
+            OperatorCb.ItemsSource = Utils.EnumUtils.GetEnumItemsSource<ComparisonOperator>();
         }
 
         internal void SetApplication(Application application) {
-            Operand1Cb.ItemsSource = Operand2Cb.ItemsSource = application?.ParameterLookup?
-                .Where(kvp => Utils.TypeUtils.IsNumericType(kvp.Value.Item1))
-                .Select(kvp => kvp.Key);
+            operand1Picker.Application = operand2Picker.Application = application;
         }
     }
 }

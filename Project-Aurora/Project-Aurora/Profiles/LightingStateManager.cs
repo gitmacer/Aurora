@@ -1,7 +1,6 @@
 ﻿using Aurora.Profiles.Aurora_Wrapper;
 using Aurora.Profiles.Desktop;
 using Aurora.Profiles.Generic_Application;
-using Aurora.Profiles.Overlays.SkypeOverlay;
 using Aurora.Settings;
 using Aurora.Settings.Layers;
 using Aurora.Utils;
@@ -86,6 +85,7 @@ namespace Aurora.Profiles
         public event EventHandler PostUpdate;
 
         private ActiveProcessMonitor processMonitor;
+        private RunningProcessMonitor runningProcessMonitor;
 
         public LightingStateManager()
         {
@@ -100,6 +100,7 @@ namespace Aurora.Profiles
                 return true;
 
             processMonitor = new ActiveProcessMonitor();
+            runningProcessMonitor = new RunningProcessMonitor();
 
             #region Initiate Defaults
             RegisterEvents(new List<ILightEvent> {
@@ -127,7 +128,7 @@ namespace Aurora.Profiles
                 new Guild_Wars_2.GW2(),
                 new WormsWMD.WormsWMD(),
                 new Blade_and_Soul.BnS(),
-                new Event_SkypeOverlay(),
+                new Skype.Skype(),
                 new ROTTombRaider.ROTTombRaider(),
                 new DyingLight.DyingLight(),
                 new ETS2.ETS2(),
@@ -513,7 +514,7 @@ namespace Aurora.Profiles
 
         private void UpdateProcess()
         {
-            if (Global.Configuration.detection_mode == ApplicationDetectionMode.ForegroroundApp && (currentTick >= nextProcessNameUpdate))
+            if (Global.Configuration.DetectionMode == ApplicationDetectionMode.ForegroroundApp && (currentTick >= nextProcessNameUpdate))
             {
                 processMonitor.GetActiveWindowsProcessname();
                 nextProcessNameUpdate = currentTick + 1000L;
@@ -531,10 +532,10 @@ namespace Aurora.Profiles
             {
                 IdleTime = System.Environment.TickCount - LastInput.dwTime;
 
-                if (IdleTime >= Global.Configuration.idle_delay * 60 * 1000)
+                if (IdleTime >= Global.Configuration.IdleDelay * 60 * 1000)
                 {
-                    if (!(Global.Configuration.time_based_dimming_enabled &&
-                    Utils.Time.IsCurrentTimeBetween(Global.Configuration.time_based_dimming_start_hour, Global.Configuration.time_based_dimming_start_minute, Global.Configuration.time_based_dimming_end_hour, Global.Configuration.time_based_dimming_end_minute))
+                    if (!(Global.Configuration.TimeBasedDimmingEnabled &&
+                    Utils.Time.IsCurrentTimeBetween(Global.Configuration.TimeBasedDimmingStartHour, Global.Configuration.TimeBasedDimmingStartMinute, Global.Configuration.TimeBasedDimmingEndHour, Global.Configuration.TimeBasedDimmingEndMinute))
                     )
                     {
                         idle_e.UpdateLights(newFrame);
@@ -548,8 +549,8 @@ namespace Aurora.Profiles
             PreUpdate?.Invoke(this, null);
 
             //Blackout. TODO: Cleanup this a bit. Maybe push blank effect frame to keyboard incase it has existing stuff displayed
-            if ((Global.Configuration.time_based_dimming_enabled &&
-               Utils.Time.IsCurrentTimeBetween(Global.Configuration.time_based_dimming_start_hour, Global.Configuration.time_based_dimming_start_minute, Global.Configuration.time_based_dimming_end_hour, Global.Configuration.time_based_dimming_end_minute)))
+            if ((Global.Configuration.TimeBasedDimmingEnabled &&
+               Utils.Time.IsCurrentTimeBetween(Global.Configuration.TimeBasedDimmingStartHour, Global.Configuration.TimeBasedDimmingStartMinute, Global.Configuration.TimeBasedDimmingEndHour, Global.Configuration.TimeBasedDimmingEndMinute)))
                 return;
 
             string raw_process_name = Path.GetFileName(processMonitor.ProcessPath);
@@ -566,7 +567,8 @@ namespace Aurora.Profiles
 
             timerInterval = profile?.Config?.UpdateInterval ?? defaultTimerInterval;
 
-            if ((profile is Desktop.Desktop && !profile.IsEnabled) || Global.Configuration.excluded_programs.Contains(raw_process_name))
+            // If the current foreground process is excluded from Aurora, disable the lighting manager
+            if ((profile is Desktop.Desktop && !profile.IsEnabled) || Global.Configuration.ExcludedPrograms.Contains(raw_process_name))
             {
                 Global.dev_manager.Shutdown();
                 Global.effengine.PushFrame(newFrame);
@@ -574,7 +576,6 @@ namespace Aurora.Profiles
             }
             else
                 Global.dev_manager.InitializeOnce();
-
 
             if (Global.Configuration.OverlaysInPreview || !preview)
             {
@@ -592,6 +593,7 @@ namespace Aurora.Profiles
 
             if (Global.Configuration.OverlaysInPreview || !preview)
             {
+                // Update any overlays registered in the Overlays array. This includes applications with type set to Overlay and things such as skype overlay
                 foreach (var overlay in Overlays)
                 {
                     ILightEvent @event = Events[overlay];
@@ -599,7 +601,7 @@ namespace Aurora.Profiles
                         @event.UpdateLights(newFrame);
                 }
 
-                //Add overlays
+                // Update any overlays that are timer-based (e.g. the volume overlay that appears for a few seconds at a time)
                 TimedListObject[] overlay_events = overlays.ToArray();
                 foreach (TimedListObject evnt in overlay_events)
                 {
@@ -607,6 +609,16 @@ namespace Aurora.Profiles
                         (evnt.item as LightEvent).UpdateLights(newFrame);
                 }
 
+                // Update any applications that have overlay layers if that application is open
+                var events = GetOverlayActiveProfiles().ToList();
+
+                //Add the Light event that we're previewing to be rendered as an overlay
+                if (preview && Global.Configuration.OverlaysInPreview && !events.Contains(profile))
+                    events.Add(profile);
+
+                foreach (var @event in events)
+                    @event.UpdateOverlayLights(newFrame);
+                
                 UpdateIdleEffects(newFrame);
             }
 
@@ -631,7 +643,7 @@ namespace Aurora.Profiles
             {
                 profile = tempProfile;
                 preview = true;
-            } else if (Global.Configuration.allow_wrappers_in_background && Global.net_listener != null && Global.net_listener.IsWrapperConnected && ((tempProfile = GetProfileFromProcessName(Global.net_listener.WrappedProcess)) != null) && tempProfile.Config.Type == LightEventType.Normal && tempProfile.IsEnabled)
+            } else if (Global.Configuration.AllowWrappersInBackground && Global.net_listener != null && Global.net_listener.IsWrapperConnected && ((tempProfile = GetProfileFromProcessName(Global.net_listener.WrappedProcess)) != null) && tempProfile.Config.Type == LightEventType.Normal && tempProfile.IsEnabled)
                 profile = tempProfile;
 
             profile = profile ?? DesktopProfile;
@@ -639,7 +651,16 @@ namespace Aurora.Profiles
             return profile;
         }
         /// <summary>Gets the current application.</summary>
-        public ILightEvent GetCurrentProfile() { return GetCurrentProfile(out bool _); }
+        public ILightEvent GetCurrentProfile() => GetCurrentProfile(out bool _);
+
+        /// <summary>
+        /// Returns a list of all profiles that should have their overlays active. This will include processes that running but not in the foreground.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<ILightEvent> GetOverlayActiveProfiles() => Events.Values
+            .Where(evt => evt.IsEnabled)
+            .Where(evt => evt.Config.ProcessNames == null || evt.Config.ProcessNames.Any(name => runningProcessMonitor.IsProcessRunning(name)));
+            //.Where(evt => evt.Config.ProcessTitles == null || ProcessUtils.AnyProcessWithTitleExists(evt.Config.ProcessTitles));
 
         /// <summary>KeyDown handler that checks the current application's profiles for keybinds.
         /// In the case of multiple profiles matching the keybind, it will pick the next one as specified in the Application.Profile order.</summary>
@@ -695,7 +716,7 @@ namespace Aurora.Profiles
                         gameState = (IGameState)Activator.CreateInstance(profile.Config.GameStateType, gs.json);
                     profile.SetGameState(gameState);
                 }
-                else if (gs is GameState_Wrapper && Global.Configuration.allow_all_logitech_bitmaps)
+                else if (gs is GameState_Wrapper && Global.Configuration.AllowAllLogitechBitmaps)
                 {
                     string gs_process_name = Newtonsoft.Json.Linq.JObject.Parse(gs.GetNode("provider")).GetValue("name").ToString().ToLowerInvariant();
                     lock (Events)

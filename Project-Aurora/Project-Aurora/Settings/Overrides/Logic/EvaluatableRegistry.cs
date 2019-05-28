@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,31 +10,34 @@ namespace Aurora.Settings.Overrides.Logic {
     public static class EvaluatableRegistry {
 
         /// <summary>Cached list of all classes that have the OverrideLogic attribute applied to them.</summary>
-        private static readonly Dictionary<Type, OverrideLogicAttribute> allOverrideLogics = Utils.TypeUtils
-            .GetTypesWithCustomAttribute<OverrideLogicAttribute>()
+        private static readonly Dictionary<Type, EvaluatableAttribute> allOverrideLogics = Utils.TypeUtils
+            .GetTypesWithCustomAttribute<EvaluatableAttribute>()
             .Where(kvp => typeof(IEvaluatable).IsAssignableFrom(kvp.Key))
             .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
         /// <summary>Cached list of all classes with a OverrideLogic attribute that also are a specific subtype.</summary>
-        private static readonly Dictionary<Type, Dictionary<Type, OverrideLogicAttribute>> specificOverrideLogics = new Dictionary<Type, Dictionary<Type, OverrideLogicAttribute>>();
+        private static readonly Dictionary<Type, Dictionary<Type, EvaluatableAttribute>> specificOverrideLogics = new Dictionary<Type, Dictionary<Type, EvaluatableAttribute>>();
 
         /// <summary>Fetches a specific subset of logic operand types (e.g. all booleans).
         /// Caches results to that subsequent calls are marginally faster.</summary>
-        /// <typeparam name="T">The type to fetch (e.g. IEvaluatableBoolean).</typeparam>
-        public static Dictionary<Type, OverrideLogicAttribute> Get<T>() where T : IEvaluatable => Get(typeof(T));
+        /// <typeparam name="T">The type to fetch (e.g. IEvaluatable&lt;bool>&gt;).</typeparam>
+        public static Dictionary<Type, EvaluatableAttribute> Get<T>() where T : IEvaluatable => Get(typeof(T));
 
         /// <summary>Fetches a specific subset of logic operand types (e.g. all booleans).
         /// Caches results to that subsequent calls are marginally faster.</summary>
-        /// <param name="t">The type to fetch (e.g. IEvaluatableBoolean).</param>
-        public static Dictionary<Type, OverrideLogicAttribute> Get(Type t) {
+        /// <param name="t">The type to fetch (e.g. IEvaluatable&lt;bool&gt;).</param>
+        public static Dictionary<Type, EvaluatableAttribute> Get(Type t) {
+            // Ensure all numbers (double, float, int, etc) become double
+            if (Utils.TypeUtils.IsNumericType(t)) t = typeof(double);
+
             if (!specificOverrideLogics.ContainsKey(t))
                 specificOverrideLogics[t] = allOverrideLogics
-                    .Where(kvp => t.IsAssignableFrom(kvp.Key))
+                    .Where(kvp => Utils.TypeUtils.ImplementsGenericInterface(kvp.Key, typeof(IEvaluatable<>), t))
                     .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             return specificOverrideLogics[t];
         }
 
         /// <summary>Fetches all logic operands that have been found with the OverrideLogicAttribute attached.</summary>
-        public static Dictionary<Type, OverrideLogicAttribute> Get() => allOverrideLogics;
+        public static Dictionary<Type, EvaluatableAttribute> Get() => allOverrideLogics;
     }
 }

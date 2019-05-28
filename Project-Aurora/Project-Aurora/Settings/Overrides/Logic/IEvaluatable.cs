@@ -2,41 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
+using System.Linq;
 
 namespace Aurora.Settings.Overrides.Logic {
-
-    #region Types Enum
-    /** Unfortunately, this section has been added to allow the genericness of the EvaluatablePresenter. We required it to be able to handle
-     multiple types of IEvaluatable, but allow it to be restricted to one specific type (e.g. IEvaluatableBoolean). To do this I, originally
-     had it take a "EvalType" property as a System.Type and you would pass the interface type that you wanted (e.g. IEvaluatableBoolean),
-     which I thought worked well as it was possible to do in XAML by setting `EvalType="{x:Type, local:IEvaluatable}`, but it turns out that
-     with XAML you cannot reference _interfaces_ that way, only actually classes. This seems like a design flaw with XAML if you ask me.
-     The next option was to then bind the EvalType to a property, however this meant that I was adding extra properties to the DataContexts
-     which was cluttering the class and was frankly quite ugly.
-     The final solution I've settled on is to make the EvalType a enum instead (EvaluatableType) enum. That way, it can easily be set in the
-     XAML editor (since enums are supported) and also does not polute the DataContext of the presenter containers. The downside is, I needed
-     some way of converting the enum to interface type so that the code can generate a list of the matching classes. That's what this is: */
-
-    /// <summary>Enum of all evaluatable types.</summary>
-    public enum EvaluatableType { All, Boolean, Number, String }
-    /// <summary>Class that stores a dictionary to convert EvaluatableType enums into the interface type.</summary>
-    public static class EvaluatableTypeResolver {
-        private static Dictionary<EvaluatableType, Type> enumToTypeDictionary = new Dictionary<EvaluatableType, Type> {
-            { EvaluatableType.All, typeof(IEvaluatable) },
-            { EvaluatableType.Boolean, typeof(IEvaluatableBoolean) },
-            { EvaluatableType.Number, typeof(IEvaluatableNumber) },
-            { EvaluatableType.String, typeof(IEvaluatableString) }
-        };
-        private static Dictionary<EvaluatableType, Func<IEvaluatable>> enumToDefaultDictionary = new Dictionary<EvaluatableType, Func<IEvaluatable>> {
-            { EvaluatableType.All, () => null },
-            { EvaluatableType.Boolean, () => new BooleanConstant() },
-            { EvaluatableType.Number, () => new NumberConstant() },
-            { EvaluatableType.String, () => new StringConstant() }
-        };
-        public static Type Resolve(EvaluatableType inType) => enumToTypeDictionary.TryGetValue(inType, out Type outType) ? outType : typeof(IEvaluatable);
-        public static IEvaluatable GetDefault(EvaluatableType inType) => enumToDefaultDictionary.TryGetValue(inType, out Func<IEvaluatable> outFunc) ? outFunc() : null;
-    }
-    #endregion
 
     /// <summary>
     /// Interface that defines a logic operand that can be evaluated into a value. Should also have a Visual control that can
@@ -58,36 +26,40 @@ namespace Aurora.Settings.Overrides.Logic {
     }
 
     /// <summary>
-    /// Interface that defines a boolean logic operand that can be tested for truthiness.
+    /// Interface that defines an IEvaluatable that will evaluate into a specific type (e.g. bool).
     /// </summary>
-    public interface IEvaluatableBoolean : IEvaluatable {
-        /// <summary>Should evaluate the current condition (maybe based on the current game state) and return
-        /// a bool indicating the result of the evaluation.</summary>
-        new bool Evaluate(IGameState gameState);
+    public interface IEvaluatable<T> : IEvaluatable
+    {
+        /// <summary>Should evaluate this instance and return the evaluation result.</summary>
+        new T Evaluate(IGameState gameState);
 
-        /// <summary>Creates a copy of this IEvaluatableBoolean.</summary>
-        new IEvaluatableBoolean Clone();
+        /// <summary>Creates a copy of this IEvaluatable.</summary>
+        new IEvaluatable<T> Clone();
     }
 
-    /// <summary>
-    /// Interface that defines a numberic logic operand that can be evaluated into a float.
-    /// </summary>
-    public interface IEvaluatableNumber : IEvaluatable {
-        /// <summary>Should evaluate the current expression and return a double with the result of the evaluation.</summary>
-        new double Evaluate(IGameState gameState);
-
-        /// <summary>Creates a copy of this IEvaluatableNumber.</summary>
-        new IEvaluatableNumber Clone();
-    }
 
     /// <summary>
-    /// Interface that defines a string logic operand that can be evaluated into a string of characters.
+    /// Class that provides a lookup for the default Evaluatable for a particular type.
     /// </summary>
-    public interface IEvaluatableString : IEvaluatable {
-        /// <summary>Should evaluate the current expression and return a string with the result.</summary>
-        new string Evaluate(IGameState gameState);
+    public static class EvaluatableDefaults {
 
-        /// <summary>Creates a copy of this IEvaluatableString.</summary>
-        new IEvaluatableString Clone();
+        private static Dictionary<Type, Type> defaultsMap = new Dictionary<Type, Type> {
+            { typeof(bool), typeof(BooleanConstant) },
+            { typeof(int), typeof(NumberConstant) },
+            { typeof(long), typeof(NumberConstant) },
+            { typeof(float), typeof(NumberConstant) },
+            { typeof(double), typeof(NumberConstant) },
+            { typeof(string), typeof(StringConstant) },
+            { typeof(System.Drawing.Color), typeof(ColorConstant) },
+            { typeof(KeySequence), typeof(KeySequenceConstant) }
+        };
+
+        public static IEvaluatable<T> Get<T>() => (IEvaluatable<T>)Get(typeof(T));
+
+        public static IEvaluatable Get(Type t) {
+            if (!defaultsMap.TryGetValue(t, out Type def))
+                throw new ArgumentException($"Type '{t.Name}' does not have a default evaluatable type.");
+            return (IEvaluatable)Activator.CreateInstance(def);
+        }
     }
 }

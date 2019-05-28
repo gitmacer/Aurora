@@ -37,11 +37,9 @@ namespace Aurora.Settings.Layers
         {
             if (this.DataContext is PercentLayerHandler && !settingsset)
             {
-                this.ComboBox_variable.Text = (this.DataContext as PercentLayerHandler).Properties._VariablePath;
-                this.ComboBox_max_variable.Text = (this.DataContext as PercentLayerHandler).Properties._MaxVariablePath;
                 this.ColorPicker_progressColor.SelectedColor = Utils.ColorUtils.DrawingColorToMediaColor((this.DataContext as PercentLayerHandler).Properties._PrimaryColor ?? System.Drawing.Color.Empty);
                 this.ColorPicker_backgroundColor.SelectedColor = Utils.ColorUtils.DrawingColorToMediaColor((this.DataContext as PercentLayerHandler).Properties._SecondaryColor ?? System.Drawing.Color.Empty);
-                this.ComboBox_effect_type.SelectedIndex = (int)(this.DataContext as PercentLayerHandler).Properties._PercentType;
+                this.ComboBox_effect_type.SelectedValue = (this.DataContext as PercentLayerHandler).Properties._PercentType;
                 this.updown_blink_value.Value = (int)((this.DataContext as PercentLayerHandler).Properties._BlinkThreshold * 100);
                 this.CheckBox_threshold_reverse.IsChecked = (this.DataContext as PercentLayerHandler).Properties._BlinkDirection;
                 this.KeySequence_keys.Sequence = (this.DataContext as PercentLayerHandler).Properties._Sequence;
@@ -53,16 +51,7 @@ namespace Aurora.Settings.Layers
         {
             if (profile != null && !profileset && profile.ParameterLookup != null)
             {
-                var var_types_numerical = profile.ParameterLookup?.Where(kvp => Utils.TypeUtils.IsNumericType(kvp.Value.Item1));
-
-                this.ComboBox_variable.Items.Clear();
-                foreach (var item in var_types_numerical)
-                    this.ComboBox_variable.Items.Add(item.Key);
-
-                this.ComboBox_max_variable.Items.Clear();
-                foreach (var item in var_types_numerical)
-                    this.ComboBox_max_variable.Items.Add(item.Key);
-
+                gsiPicker_variable.Application = gsiPicker_maxVariable.Application = profile;
                 profileset = true;
             }
             settingsset = false;
@@ -80,18 +69,6 @@ namespace Aurora.Settings.Layers
             SetSettings();
 
             this.Loaded -= UserControl_Loaded;
-        }
-
-        private void ComboBox_variable_TextChanged(object sender, RoutedEventArgs e)
-        {
-            if (IsLoaded && settingsset && this.DataContext is PercentLayerHandler && sender is ComboBox)
-                (this.DataContext as PercentLayerHandler).Properties._VariablePath = (sender as ComboBox).Text;
-        }
-
-        private void ComboBox_max_variable_TextChanged(object sender, RoutedEventArgs e)
-        {
-            if (IsLoaded && settingsset && this.DataContext is PercentLayerHandler && sender is ComboBox)
-                (this.DataContext as PercentLayerHandler).Properties._MaxVariablePath = (sender as ComboBox).Text;
         }
 
         private void ColorPicker_progressColor_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
@@ -116,7 +93,7 @@ namespace Aurora.Settings.Layers
         {
             if (IsLoaded && settingsset && this.DataContext is PercentLayerHandler && sender is ComboBox)
             {
-                (this.DataContext as PercentLayerHandler).Properties._PercentType = (PercentEffectType)Enum.Parse(typeof(PercentEffectType), (sender as ComboBox).SelectedIndex.ToString());
+                (this.DataContext as PercentLayerHandler).Properties._PercentType = (PercentEffectType)(sender as ComboBox).SelectedValue;
             }
         }
 

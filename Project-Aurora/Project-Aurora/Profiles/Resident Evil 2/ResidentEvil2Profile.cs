@@ -2,7 +2,7 @@
 using Aurora.Settings;
 using Aurora.Settings.Layers;
 using Aurora.Settings.Overrides.Logic;
-using Aurora.Settings.Overrides.Logic.Builder;
+using Aurora.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -22,13 +22,17 @@ namespace Aurora.Profiles.ResidentEvil2
             Layers = new System.Collections.ObjectModel.ObservableCollection<Layer>()
             {
                 new Layer("Rank Indicator", new Layers.ResidentEvil2RankLayerHandler()),
-                new Layer("Poison Indicator", new SolidColorLayerHandler{
+                new Layer("Poison Indicator", new SolidColorLayerHandler {
                     Properties = new LayerHandlerProperties
                     {
                         _PrimaryColor = Color.FromArgb(255, 128, 0, 128),
                         _Sequence = new KeySequence(new FreeFormObject(0, 140, 840, 80))
                     }
-                }, new OverrideLogicBuilder().SetDynamicBoolean("_Enabled", new BooleanGSIBoolean("Player/Poison"))),
+                }) {
+                    OverrideLogic = new ObservableDictionary<string, IEvaluatable> {
+                        { "_Enabled", new BooleanGSIBoolean("Player/Poison") }
+                    }
+                },
                 new Layer("Status Indicator", new Layers.ResidentEvil2HealthLayerHandler())
             };
         }

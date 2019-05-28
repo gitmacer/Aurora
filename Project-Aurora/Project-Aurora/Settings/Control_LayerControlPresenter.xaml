@@ -24,14 +24,14 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <Border Background="#A5000000" CornerRadius="8" />
+        <Border Background="#00000000" CornerRadius="8" />
         <Grid x:Name="grd_LayerControl">
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Layer name:" VerticalAlignment="Top" Margin="10,10,0,0"/>
-            <TextBox x:Name="txtLayerName" HorizontalAlignment="Left" Height="23" Margin="78,9,0,0" TextWrapping="Wrap" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="200"/>
+            <TextBox x:Name="txtLayerName" HorizontalAlignment="Left" Margin="78,9,0,0" TextWrapping="Wrap" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="200"/>
             <TextBlock HorizontalAlignment="Left" Margin="10,38,0,0" TextWrapping="Wrap" Text="Layer type:" VerticalAlignment="Top"/>
-            <ComboBox x:Name="cmbLayerType" HorizontalAlignment="Left" Margin="72,37,0,0" VerticalAlignment="Top" Width="206" SelectionChanged="cmbLayerType_SelectionChanged"/><!-- ItemTemplate="{Binding Source={StaticResource LayerTypeTemplate}}"/>-->
+            <ComboBox x:Name="cmbLayerType" HorizontalAlignment="Left" Margin="72,37,0,0" VerticalAlignment="Top" Width="206" SelectionChanged="cmbLayerType_SelectionChanged" />
             <UserControl x:Name="ctrlLayerTypeConfig" Margin="10,64,10,10"/>
-            <Button x:Name="btnReset" Content="Reset Layer" HorizontalAlignment="Left" Margin="283,39,0,0" VerticalAlignment="Top" Width="75" Click="btnReset_Click"/>
+            <Button x:Name="btnReset" Content="Reset Layer" HorizontalAlignment="Left" Margin="283,39,0,0" VerticalAlignment="Top" Width="75" Click="btnReset_Click" />
         </Grid>
 
         <Grid x:Name="grdLayerConfigs" Margin="4" HorizontalAlignment="Right" Width="484" Height="188" VerticalAlignment="Top" Background="#FF323232" Visibility="Collapsed">
@@ -43,13 +43,23 @@
             <TextBlock x:Name="lbl_Opacity_Text" HorizontalAlignment="Left" Margin="166,30,0,0" TextWrapping="Wrap" Text="100 %" VerticalAlignment="Top"/>
         </Grid>
 
-        <overrides:Control_OverridesEditor x:Name="overridesEditor" Background="#FF323232" Visibility="Collapsed" />
+        <overrides:Control_OverridesEditor x:Name="overridesEditor" Background="{StaticResource BaseBackgroundBrush}" Visibility="Collapsed" />
 
         <Button x:Name="btnConfig" HorizontalAlignment="Right" Margin="0,9,10,0" VerticalAlignment="Top" Click="btnConfig_Click" ToolTip="Toggles the visibility of additional layer configurations">
-            <Image Source="/Aurora;component/Resources/LayerConfig_icon.png" Width="23" Height="23" Margin="2"/>
+            <Image Source="/Aurora;component/Resources/UIIcons/support-30.png" Width="23" Height="23" Margin="2"/>
         </Button>
         <Button x:Name="btnOverrides" HorizontalAlignment="Right" Margin="0,9,47,0" VerticalAlignment="Top" Click="btnOverrides_Click" ToolTip="Show layer conditional override settings">
-            <Image Source="/Aurora;component/Resources/LayerConditions_icon.png" Width="23" Height="23" Margin="2"/>
+            <Image Source="/Aurora;component/Resources/UIIcons/stacked-organizational-chart-30.png" Width="23" Height="23" Margin="2"/>
         </Button>
+
+        <!-- Indicator light for when overrides are active -->
+        <Grid Margin="0,34,57,0" HorizontalAlignment="Right" VerticalAlignment="Top" IsHitTestVisible="False">
+            <Ellipse Width="4" Height="4" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Ellipse Width="12" Height="12" Fill="Cyan" Opacity="0.4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.Effect>
+                    <BlurEffect />
+                </Ellipse.Effect>
+            </Ellipse>
+        </Grid>
     </Grid>
 </UserControl>

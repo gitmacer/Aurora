@@ -19,7 +19,7 @@ namespace Aurora.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -57,16 +57,6 @@ namespace Aurora.Properties {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap addprofile_icon {
-            get {
-                object obj = ResourceManager.GetObject("addprofile_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -173,6 +163,46 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap checked_checkbox_30 {
+            get {
+                object obj = ResourceManager.GetObject("checked_checkbox_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap clipboard_30 {
+            get {
+                object obj = ResourceManager.GetObject("clipboard_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap collapse_arrow_30 {
+            get {
+                object obj = ResourceManager.GetObject("collapse_arrow_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap copy_30 {
+            get {
+                object obj = ResourceManager.GetObject("copy_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CorsairInstall_Step1 {
             get {
                 object obj = ResourceManager.GetObject("CorsairInstall_Step1", resourceCulture);
@@ -203,9 +233,39 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap delete_30 {
+            get {
+                object obj = ResourceManager.GetObject("delete_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap desktop_icon {
             get {
                 object obj = ResourceManager.GetObject("desktop_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap diamonds_30 {
+            get {
+                object obj = ResourceManager.GetObject("diamonds_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap discord_24 {
+            get {
+                object obj = ResourceManager.GetObject("discord_24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,9 +293,39 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap downloads_30 {
+            get {
+                object obj = ResourceManager.GetObject("downloads_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap DyingLight {
             get {
                 object obj = ResourceManager.GetObject("DyingLight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ellipsis_30 {
+            get {
+                object obj = ResourceManager.GetObject("ellipsis_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap error_50 {
+            get {
+                object obj = ResourceManager.GetObject("error_50", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -263,9 +353,29 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Export_Icon {
+        internal static System.Drawing.Bitmap expand_arrow_30 {
             get {
-                object obj = ResourceManager.GetObject("Export_Icon", resourceCulture);
+                object obj = ResourceManager.GetObject("expand_arrow_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap eye_30 {
+            get {
+                object obj = ResourceManager.GetObject("eye_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap font_size_30 {
+            get {
+                object obj = ResourceManager.GetObject("font_size_30", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -353,9 +463,29 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons8_checked_checkbox_30 {
+        internal static System.Drawing.Bitmap github_32 {
             get {
-                object obj = ResourceManager.GetObject("icons8_checked_checkbox_30", resourceCulture);
+                object obj = ResourceManager.GetObject("github_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] GreyscaleShader {
+            get {
+                object obj = ResourceManager.GetObject("GreyscaleShader", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap help_50 {
+            get {
+                object obj = ResourceManager.GetObject("help_50", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -363,9 +493,9 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons8_diamonds_30 {
+        internal static System.Drawing.Bitmap hide_30 {
             get {
-                object obj = ResourceManager.GetObject("icons8_diamonds_30", resourceCulture);
+                object obj = ResourceManager.GetObject("hide_30", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -373,9 +503,9 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons8_keyboard_30 {
+        internal static System.Drawing.Bitmap info_50 {
             get {
-                object obj = ResourceManager.GetObject("icons8_keyboard_30", resourceCulture);
+                object obj = ResourceManager.GetObject("info_50", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -383,29 +513,9 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons8_numbers_30 {
+        internal static System.Drawing.Bitmap keyboard_30 {
             get {
-                object obj = ResourceManager.GetObject("icons8_numbers_30", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_paint_palette_30 {
-            get {
-                object obj = ResourceManager.GetObject("icons8_paint_palette_30", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Import_Icon {
-            get {
-                object obj = ResourceManager.GetObject("Import_Icon", resourceCulture);
+                object obj = ResourceManager.GetObject("keyboard_30", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -473,6 +583,26 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap maintenance_30 {
+            get {
+                object obj = ResourceManager.GetObject("maintenance_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap maximize_window_30 {
+            get {
+                object obj = ResourceManager.GetObject("maximize_window_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap minecraft_128x128 {
             get {
                 object obj = ResourceManager.GetObject("minecraft_128x128", resourceCulture);
@@ -483,9 +613,39 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Not_Visible {
+        internal static System.Drawing.Bitmap minimize_window_30 {
             get {
-                object obj = ResourceManager.GetObject("Not_Visible", resourceCulture);
+                object obj = ResourceManager.GetObject("minimize_window_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap moon_and_stars_30 {
+            get {
+                object obj = ResourceManager.GetObject("moon_and_stars_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap numbers_30 {
+            get {
+                object obj = ResourceManager.GetObject("numbers_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ok_50 {
+            get {
+                object obj = ResourceManager.GetObject("ok_50", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -521,6 +681,16 @@ namespace Aurora.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap paint_palette_30 {
+            get {
+                object obj = ResourceManager.GetObject("paint_palette_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] PD2_GSI {
@@ -543,9 +713,19 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Question_Help {
+        internal static System.Drawing.Bitmap puzzle_30 {
             get {
-                object obj = ResourceManager.GetObject("Question_Help", resourceCulture);
+                object obj = ResourceManager.GetObject("puzzle_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap questions_30 {
+            get {
+                object obj = ResourceManager.GetObject("questions_30", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -573,9 +753,19 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap removeprofile_icon {
+        internal static System.Drawing.Bitmap resize_vertical_30 {
             get {
-                object obj = ResourceManager.GetObject("removeprofile_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("resize_vertical_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap restore_window_30 {
+            get {
+                object obj = ResourceManager.GetObject("restore_window_30", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -603,9 +793,9 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Save_Icon {
+        internal static System.Drawing.Bitmap search_30 {
             get {
-                object obj = ResourceManager.GetObject("Save_Icon", resourceCulture);
+                object obj = ResourceManager.GetObject("search_30", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -613,9 +803,29 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap settings_icon {
+        internal static System.Drawing.Bitmap Skype_300x300 {
             get {
-                object obj = ResourceManager.GetObject("settings_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("Skype_300x300", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap stacked_organizational_chart_30 {
+            get {
+                object obj = ResourceManager.GetObject("stacked_organizational_chart_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap steam_26 {
+            get {
+                object obj = ResourceManager.GetObject("steam_26", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -653,6 +863,36 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap sun_30 {
+            get {
+                object obj = ResourceManager.GetObject("sun_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap support_30 {
+            get {
+                object obj = ResourceManager.GetObject("support_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap trash_can_50 {
+            get {
+                object obj = ResourceManager.GetObject("trash_can_50", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap unknown_app_icon {
             get {
                 object obj = ResourceManager.GetObject("unknown_app_icon", resourceCulture);
@@ -663,9 +903,19 @@ namespace Aurora.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Visible {
+        internal static System.Drawing.Bitmap uploads_30 {
             get {
-                object obj = ResourceManager.GetObject("Visible", resourceCulture);
+                object obj = ResourceManager.GetObject("uploads_30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap warning_50 {
+            get {
+                object obj = ResourceManager.GetObject("warning_50", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
