@@ -27,10 +27,12 @@ before_build:
     nuget restore
     
 after_build:
-- cmd: >-
-    set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
-    
-    ISCC.exe /DEXTERNAL_VERSION=%APPVEYOR_BUILD_VERSION% %APPVEYOR_BUILD_FOLDER%\Installer\installer.iss
+# Appveyor VS2019 immage does not come with inno Setup
+
+#- cmd: >-
+#    set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
+#    
+#    ISCC.exe /DEXTERNAL_VERSION=%APPVEYOR_BUILD_VERSION% %APPVEYOR_BUILD_FOLDER%\Installer\installer.iss
 
 
 build:
