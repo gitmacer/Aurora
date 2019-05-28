@@ -183,8 +183,7 @@ namespace Aurora.Controls {
             }  else {
                 var w = new Window {
                     ShowInTaskbar = false,
-                    WindowStyle = WindowStyle.None,
-                    WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                    WindowStyle = WindowStyle.ToolWindow,
                     ResizeMode = ResizeMode.NoResize,
                     Content = msg,
                     SizeToContent = SizeToContent.WidthAndHeight,
