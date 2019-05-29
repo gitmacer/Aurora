@@ -6,9 +6,9 @@ seconds: Sekunden
 start_minimized: Aurora minimiert starten
 high_priority: Hohe Priorität
 closing_mode: Beim Schließen
-show_overlays_preview: Zeige Überlagerungsebenen in der Vorschau
+show_overlays_preview: Zeige Überlagerungsebenen während der Vorschau
 global_brightness: Helligkeit aller Geräte
-keyboard_brightness: Helligkeit der Tastatur 
+keyboard_brightness: Helligkeit der Tastatur
 peripheral_brightness: Helligkeit der Zusatzgeräte
 use_alt_volume: Helligkeit aller Geräte mit Alt + Lautstärketasten steuern
 bitmap_quality: Bitmap Qualität
@@ -19,8 +19,8 @@ add: Hinzufügen
 remove: Entfernen
 
 ~Anwendungen hört sich nicht gut an. Bessere bezeichnung sollte gefunden werden
-application_settings: Anwendungen Einstellungen
-app_detection_mode: Anwendung Erkennungsmodus
+application_settings: Anwendungen-Einstellungen
+app_detection_mode: Anwendung-Erkennungsmodus
 excluded_processes: Ausgeschlossene Anwendungen
 check_updates_start: Beim Start nach Updates suchen
 check_pointers_start: Beim Start nach Speicheradressen (Pointer) Updates suchen
@@ -38,48 +38,49 @@ disable_keyboard_lighting: Tastaturbeleuchtung deaktivieren
 disable_mouse_lighting: Mausbeleuchtung deaktivieren
 disable_headset_lighting: Headsetbeleuchtung deaktivieren
 
-first_time_instruct: First-time instructions
-install_wrapper: Aurora "wrapper" installieren
-allow_wrapper_priority: "wrappers" erlauben Desktop Profile zu übernehmen
-debug_settings: Debug Settings
-show_bmp_window: Show bitmap window
-show_http_window: Show GSI HTTP requests
-always_on_top: Always on top
-show_logs_folder: Show logs folder
-about: About
-about_0: This is a public Beta version of Aurora, there may be bugs and issues.
-about_1: Game logos and other images are owned by their respective owners.
-about_2: Some icons are used with the free license from Icons8.com
-find_us: Find us on
-exit_mode.ask: Ask
-exit_mode.minimize: Minimize
-exit_mode.exit: Exit
-mouse.right_handed: Right handed
-mouse.left_handed: Left handed
-default: Default
-keycap.default_backglow: Default (with backglow)
-keycap.default_backonly: Default (backglow only)
-keycap.colorized: Colorized
-keycap.colorized_blank: Colorized (blank)
-app_detection.windows: Windows Events (default)
-app_detection.foreground: Foreground app scan
-bitmap.best: Best
-bitmap.great: Great
-bitmap.good: Good
+first_time_instruct: Einrichtungsanleitungen
+install_wrapper: Aurora Wrapper installieren
+allow_wrapper_priority: Wrapper erlauben das Desktop Profil zu übernehmen
+debug_settings: Debug-Einstellungen
+show_bmp_window: Bitmap-Fenster anzeigen
+show_http_window: Zeige GSI HTTP Anfragen
+always_on_top: Immer im Vordergrund
+show_logs_folder: Protokollordner anzeigen
+about: über
+about_0: Dies ist eine öffentliche Beta-Version von Aurora. Möglicherweise gibt es Fehler und Probleme.
+about_1: Spielelogos und andere Bilder gehören ihren jeweiligen Eigentümern.
+about_2: Einige Icons werden mit der kostenlosen Lizenz von Icons8.com verwendet.
+find_us: Finden Sie uns auf
+exit_mode.ask: Fragen
+exit_mode.minimize: Minimieren
+exit_mode.exit: Schließen
+mouse.right_handed: Rechts
+mouse.left_handed: Links
+default: Standard
+keycap.default_backglow: Standard (with Hintergrundbeleuchtung)
+keycap.default_backonly: Standard (nur Hintergrundbeleuchtung)
+keycap.colorized: Farbig
+keycap.colorized_blank: Farbig (ohne Beschriftung)
+app_detection.windows: Windows Ereignisse (Standard)
+app_detection.foreground: Vordergrund-App-Scan
+bitmap.best: Beste
+bitmap.great: Großartig
+bitmap.good: Gut
 bitmap.okay: Okay
-bitmap.fine: Fine
-alert_delete_text: Are you sure you wish to delete {0} '{1}'? You cannot undo this action.
-alert_delete_title: Delete {0}?
-delete: Delete
-dont_delete: Don't delete
-yes: Yes
-no: No
-alert_exit_text: Would you like to exit Aurora?
-fatal_error_title: Fatal error
-fatal_error_text: Aurora has fatally crashed. Please report the follow to author:
-fatal_missing_admin_rights: Aurora has not been started as an administrator.
-fatal_already_running: An instance of Aurora is already running. This process will now exit.
-fatal_gamestate_error: An error occured trying to start GameStateListener.
-fatal_gamestate_start_error: An error occured trying to start the GameStateListener. Ensure you are running Aurora as an administrator and nothing is using port {0}.
-fatal_configmanager_load_error: An error occured while attempting to load configuration data. The default configuration has been loaded.
-show_exception_details: Show exception details
+~ nicht sicher was das beste Wort für "fine" ist.
+bitmap.fine: Ausreichend
+alert_delete_text: Möchten Sie {0} '{1}' wirklich unwiderruflich löschen?
+alert_delete_title: {0} löschen?
+delete: Löschen
+dont_delete: Nicht löschen
+yes: Ja
+no: Nein
+alert_exit_text: Möchten Sie Aurora schließen?
+fatal_error_title: Schwerwiegender Fehler
+fatal_error_text: Aurora ist abgestürzt. Bitte melden Sie das Folgende dem Autor:
+fatal_missing_admin_rights: Aurora wurde nicht als Administrator gestartet.
+fatal_already_running: Aurora wird bereits ausgeführt. Dieser Prozess wird jetzt beendet.
+fatal_gamestate_error: Beim Starten von GameStateListener ist ein Fehler aufgetreten.
+fatal_gamestate_start_error: Beim Starten von GameStateListener ist ein Fehler aufgetreten. Stellen Sie sicher, dass Sie Aurora als Administrator ausführen und dass der Port {0} nicht bereits verwendet wird.
+fatal_configmanager_load_error: Beim Versuch die Konfigurationsdaten zu laden ist ein Fehler aufgetreten. Die Standardkonfiguration wurde geladen.
+show_exception_details: Problemdetails anzeigen
