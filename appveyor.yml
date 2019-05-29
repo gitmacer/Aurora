@@ -27,7 +27,7 @@ before_build:
     nuget restore
     
 after_build:
-# Appveyor VS2019 immage does not come with inno Setup
+# Appveyor VS2019 image does not come with inno Setup
 
 #- cmd: >-
 #    set PATH="C:\Program Files (x86)\Inno Setup 5";%PATH%
