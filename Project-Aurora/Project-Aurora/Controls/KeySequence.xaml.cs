@@ -340,6 +340,24 @@ namespace Aurora.Controls
             }
                 
         }
+
+        private void btn_fill_canvas_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.KeySequence seq = Sequence;
+            if (seq != null)
+            {
+                seq.type = Settings.KeySequenceType.Sequence;
+                seq.freeform.X = -Effects.grid_baseline_x;
+                seq.freeform.Y = -Effects.grid_baseline_y;
+                seq.freeform.Width = Effects.grid_width;
+                seq.freeform.Height = Effects.grid_height;
+                seq.freeform.Angle = 0;
+                Sequence = seq;
+                seq.type = Settings.KeySequenceType.FreeForm;
+                Sequence = seq;
+                sequence_updateToLayerEditor();
+            }
+        }
     }
 }
 
