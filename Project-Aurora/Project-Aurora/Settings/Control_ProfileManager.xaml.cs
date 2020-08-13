@@ -226,7 +226,8 @@ namespace Aurora.Settings
             SaveFileDialog dialog = new SaveFileDialog
             {
                 Title = "Export profile",
-                Filter = "JSON file (*.json)|*.json"
+                Filter = "JSON file (*.json)|*.json",
+                FileName = FocusedApplication.Profile.ProfileName
             };
 
             if (dialog.ShowDialog() == true)
