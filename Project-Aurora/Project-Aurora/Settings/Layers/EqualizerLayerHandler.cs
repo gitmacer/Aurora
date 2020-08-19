@@ -33,8 +33,10 @@ namespace Aurora.Settings.Layers
         Waveform,
 
         [Description("Waveform (From bottom)")]
-        Waveform_Bottom
+        Waveform_Bottom,
 
+        [Description("Transparent Bars")]
+        TransparentBars
     }
 
     public enum EqualizerPresentationType
@@ -268,7 +270,10 @@ namespace Aurora.Settings.Layers
                     if (BgEnabled)
                         g.FillRectangle(new SolidBrush(Properties.DimColor), sourceRect);
 
-                    g.CompositingMode = CompositingMode.SourceCopy;
+                    if (Properties.EQType == EqualizerType.TransparentBars)
+                        g.CompositingMode = CompositingMode.SourceOver;
+                    else
+                        g.CompositingMode = CompositingMode.SourceCopy;
                     
                     int wave_step_amount = _local_fft.Length / (int)sourceRect.Width;
 
@@ -291,6 +296,7 @@ namespace Aurora.Settings.Layers
                             }
                             break;
 
+                        case EqualizerType.TransparentBars:
                         case EqualizerType.PowerBars:
                             //Perform FFT again to get frequencies
                             FastFourierTransform.FFT(false, (int)Math.Log(fftLength, 2.0), _local_fft);
@@ -333,6 +339,9 @@ namespace Aurora.Settings.Layers
                             for (int f_x = 0; f_x < freq_results.Length - 1; f_x++)
                             {
                                 float fft_val = flux_array[f_x] / scaled_max_amplitude;
+                                
+                                if (float.IsNaN(fft_val))
+                                    fft_val = 0;
 
                                 fft_val = Math.Min(1.0f, fft_val);
 
@@ -345,9 +354,16 @@ namespace Aurora.Settings.Layers
 
                                 previous_freq_results[f_x] = fft_val;
 
-                                Brush brush = GetBrush(-(f_x % 2), f_x, freq_results.Length - 1);
-
-                                g.FillRectangle(brush, x, y - height, bar_width, height);
+                                if (Properties.EQType == EqualizerType.PowerBars)
+                                {
+                                    Brush brush = GetBrush(-(f_x % 2), f_x, freq_results.Length - 1);
+                                    g.FillRectangle(brush, x, y - height, bar_width, height);
+                                }
+                                else
+                                {
+                                    Brush brush = GetBrush(-(f_x % 2), f_x, freq_results.Length - 1, fft_val);
+                                    g.FillRectangle(brush, x, 0, bar_width, sourceRect.Height);
+                                }
                             }
                             break;
                     }
@@ -407,20 +423,32 @@ namespace Aurora.Settings.Layers
             return (int)(freq / (44000 / _ffts.Length));
         }
 
-        private Brush GetBrush(float value, float position, float max_position)
+        private Brush GetBrush(float value, float position, float max_position, float AlphaScalar = 1)
         {
+            //Apply alpha scalar to the EffectBrush
+            EffectBrush TempGradient = new EffectBrush(Properties.Gradient);
+            if (AlphaScalar < 1)
+            {
+                TempGradient.colorGradients = new SortedDictionary<float, Color>(); //override memref with a new Dictionary
+                foreach (var item in Properties.Gradient.colorGradients)
+                {
+                    TempGradient.colorGradients.Add(item.Key, Color.FromArgb((int)(item.Value.A * AlphaScalar), item.Value));
+                }
+            }
+
+
             if (Properties.ViewType == EqualizerPresentationType.AlternatingColor)
             {
                 if (value >= 0)
-                    return new SolidBrush(Properties.PrimaryColor);
+                    return new SolidBrush(Color.FromArgb((int)(Properties.PrimaryColor.A * AlphaScalar), Properties.PrimaryColor));
                 else
-                    return new SolidBrush(Properties.SecondaryColor);
+                    return new SolidBrush(Color.FromArgb((int)(Properties.SecondaryColor.A * AlphaScalar), Properties.SecondaryColor));
             }
             else if (Properties.ViewType == EqualizerPresentationType.GradientNotched)
-                return new SolidBrush(Properties.Gradient.GetColorSpectrum().GetColorAt(position, max_position));
+                return new SolidBrush(TempGradient.GetColorSpectrum().GetColorAt(position, max_position));
             else if (Properties.ViewType == EqualizerPresentationType.GradientHorizontal)
             {
-                EffectBrush e_brush = new EffectBrush(Properties.Gradient.GetColorSpectrum()) {
+                EffectBrush e_brush = new EffectBrush(TempGradient.GetColorSpectrum()) {
                     start = PointF.Empty,
                     end = new PointF(sourceRect.Width, 0)
                 };
@@ -428,10 +456,10 @@ namespace Aurora.Settings.Layers
                 return e_brush.GetDrawingBrush();
             }
             else if (Properties.ViewType == EqualizerPresentationType.GradientColorShift)
-                return new SolidBrush(Properties.Gradient.GetColorSpectrum().GetColorAt(Utils.Time.GetMilliSeconds(), 1000));
+                return new SolidBrush(TempGradient.GetColorSpectrum().GetColorAt(Utils.Time.GetMilliSeconds(), 1000));
             else if (Properties.ViewType == EqualizerPresentationType.GradientVertical)
             {
-                EffectBrush e_brush = new EffectBrush(Properties.Gradient.GetColorSpectrum()) {
+                EffectBrush e_brush = new EffectBrush(TempGradient.GetColorSpectrum()) {
                     start = new PointF(0, sourceRect.Height),
                     end = PointF.Empty
                 };
@@ -439,7 +467,7 @@ namespace Aurora.Settings.Layers
                 return e_brush.GetDrawingBrush();
             }
             else
-                return new SolidBrush(Properties.PrimaryColor);
+                return new SolidBrush(Color.FromArgb((int)(Properties.PrimaryColor.A * AlphaScalar), Properties.PrimaryColor));
         }
 
         public override void Dispose()
