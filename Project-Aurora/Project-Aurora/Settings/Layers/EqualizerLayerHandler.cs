@@ -430,9 +430,9 @@ namespace Aurora.Settings.Layers
             if (AlphaScalar < 1)
             {
                 TempGradient.colorGradients = new SortedDictionary<float, Color>(); //override memref with a new Dictionary
-                foreach (var item in Properties.Gradient.colorGradients)
+                foreach (var color in Properties.Gradient.colorGradients)
                 {
-                    TempGradient.colorGradients.Add(item.Key, Color.FromArgb((int)(item.Value.A * AlphaScalar), item.Value));
+                    TempGradient.colorGradients.Add(color.Key, Color.FromArgb((byte)(color.Value.A * AlphaScalar), color.Value));
                 }
             }
 
@@ -440,9 +440,9 @@ namespace Aurora.Settings.Layers
             if (Properties.ViewType == EqualizerPresentationType.AlternatingColor)
             {
                 if (value >= 0)
-                    return new SolidBrush(Color.FromArgb((int)(Properties.PrimaryColor.A * AlphaScalar), Properties.PrimaryColor));
+                    return new SolidBrush(Color.FromArgb((byte)(Properties.PrimaryColor.A * AlphaScalar), Properties.PrimaryColor));
                 else
-                    return new SolidBrush(Color.FromArgb((int)(Properties.SecondaryColor.A * AlphaScalar), Properties.SecondaryColor));
+                    return new SolidBrush(Color.FromArgb((byte)(Properties.SecondaryColor.A * AlphaScalar), Properties.SecondaryColor));
             }
             else if (Properties.ViewType == EqualizerPresentationType.GradientNotched)
                 return new SolidBrush(TempGradient.GetColorSpectrum().GetColorAt(position, max_position));
@@ -467,7 +467,7 @@ namespace Aurora.Settings.Layers
                 return e_brush.GetDrawingBrush();
             }
             else
-                return new SolidBrush(Color.FromArgb((int)(Properties.PrimaryColor.A * AlphaScalar), Properties.PrimaryColor));
+                return new SolidBrush(Color.FromArgb((byte)(Properties.PrimaryColor.A * AlphaScalar), Properties.PrimaryColor));
         }
 
         public override void Dispose()
